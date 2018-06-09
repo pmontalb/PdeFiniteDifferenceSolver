@@ -8,30 +8,28 @@
 namespace pde
 {
 	/**
-	*	Supports up to 3D input data
-	*
-	*	CRTP implementation
+	*	Supports up to 3D input data.
 	*/
 	template<typename BcType, MemorySpace memorySpace = MemorySpace::Device, MathDomain mathDomain = MathDomain::Float>
 	class PdeInputData
 	{
 	public:
-		const cl::Tensor<memorySpace, mathDomain>& initialCondition;
+		cl::Tensor<memorySpace, mathDomain> initialCondition;
 
 		/**
 		* Space discretization mesh
 		*/
-		const cl::Tensor<memorySpace, mathDomain>& spaceGrid;
+		cl::Tensor<memorySpace, mathDomain> spaceGrid;
 
 		/**
 		* Advection coefficient
 		*/
-		const cl::Tensor<memorySpace, mathDomain>& velocity;
+		cl::Tensor<memorySpace, mathDomain> velocity;
 
 		/**
 		* Diffusion coefficient
 		*/
-		const cl::Tensor<memorySpace, mathDomain>& diffusion;
+		cl::Tensor<memorySpace, mathDomain> diffusion;
 
 		/**
 		* Time discretization mesh size
