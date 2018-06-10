@@ -7,6 +7,7 @@
 
 #include <PdeInputData.h>
 #include <FiniteDifferenceManager.h>
+#include <CudaException.h>
 
 #define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
 	virtual ~CLASS() noexcept = default;\
@@ -64,6 +65,8 @@ namespace pde
 			// reset everything to 0
 			cl::ColumnWiseMatrix<memorySpace, mathDomain> spaceDiscretizer(solution->nRows(), solution->nRows(), 0.0);
 			timeDiscretizers->Set(0.0f);
+			for (unsigned i = 0; i < timeDiscretizers->nMatrices(); ++i)
+				timeDiscretizers->matrices[i]->Print(std::string("i=") + std::to_string(i));
 
 			FiniteDifferenceInput1D _input(inputData.dt,
 										   inputData.spaceGrid.GetBuffer(),
@@ -72,9 +75,18 @@ namespace pde
 										   inputData.solverType, 
 										   inputData.boundaryConditions);
 			pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer.GetTile(), _input);
-			pde::detail::MakeTimeDiscretizer1D(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), _input);
 
-			timeDiscretizers->matrices[0]->Print();
+			try
+			{
+				pde::detail::MakeTimeDiscretizer1D(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), _input);
+			}
+			catch (const Exception& ex)
+			{
+				int a = 0;
+			}
+
+			for (unsigned i = 0; i < timeDiscretizers->nMatrices(); ++i)
+				timeDiscretizers->matrices[i]->Print(std::string("i=") + std::to_string(i));
 		}
 
 		void AdvanceImpl(const unsigned nSteps = 1)

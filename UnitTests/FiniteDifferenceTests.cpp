@@ -24,8 +24,6 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			if (solverType == SolverType::AdamsBashforth2)
-				return;  // FIXME: remove it when multi-step methods are implemented
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
 			pde::sol1D solver(data);
 
@@ -90,8 +88,6 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			if (solverType == SolverType::AdamsBashforth2)
-				return;  // FIXME: remove it when multi-step methods are implemented
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
 			pde::sol1D solver(data);
 
@@ -123,9 +119,6 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			if (solverType == SolverType::AdamsBashforth2)
-				return;  // FIXME: remove it when multi-step methods are implemented
-
 			// need to setup the correct boundary condition with the slope of the line
 			BoundaryCondition leftBoundaryCondition(BoundaryConditionType::Neumann, 10.0);
 			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -10.0);
