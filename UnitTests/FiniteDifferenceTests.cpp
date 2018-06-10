@@ -55,8 +55,6 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			if (solverType == SolverType::AdamsBashforth2)
-				return;  // FIXME: remove it when multi-step methods are implemented
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
 			pde::sol1D solver(data);
 
