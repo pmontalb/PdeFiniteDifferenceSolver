@@ -44,8 +44,8 @@ namespace pde
 		const cl::Tensor<memorySpace, mathDomain>* const GetTimeDiscretizer() const noexcept { return timeDiscretizers ? timeDiscretizers.get() : nullptr; }
 
 		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solution;
-	protected:
 		const pdeInputType& inputData;
+	protected:
 		std::shared_ptr<cl::Tensor<memorySpace, mathDomain>> timeDiscretizers;
 	};
 
@@ -61,8 +61,9 @@ namespace pde
 	protected:
 		void MakeTimeDiscretizer()
 		{
-			// needs to set 0 everywhere in the space discretizer
+			// reset everything to 0
 			cl::ColumnWiseMatrix<memorySpace, mathDomain> spaceDiscretizer(solution->nRows(), solution->nRows(), 0.0);
+			timeDiscretizers->Set(0.0f);
 
 			FiniteDifferenceInput1D _input(inputData.dt,
 										   inputData.spaceGrid.GetBuffer(),
@@ -72,6 +73,8 @@ namespace pde
 										   inputData.boundaryConditions);
 			pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer.GetTile(), _input);
 			pde::detail::MakeTimeDiscretizer1D(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), _input);
+
+			timeDiscretizers->matrices[0]->Print();
 		}
 
 		void AdvanceImpl(const unsigned nSteps = 1)
@@ -83,15 +86,20 @@ namespace pde
 										   inputData.solverType,
 										   inputData.boundaryConditions);
 			pde::detail::Iterate1D(solution->GetTile(), timeDiscretizers->GetCube(), _input, nSteps);
+			timeDiscretizers->matrices[0]->Print();
 		}
 
 		void Setup(const unsigned solverSteps)
 		{
 			this->solution = std::make_shared<cl::ColumnWiseMatrix<memorySpace, mathDomain>>(this->inputData.initialCondition.nRows(), solverSteps);
 			this->solution->Set(*this->inputData.initialCondition.matrices[0]->columns[0], 0);
+			this->timeDiscretizers = std::make_shared<cl::Tensor<memorySpace, mathDomain>>(this->inputData.initialCondition.nRows(), this->inputData.initialCondition.nRows(), solverSteps);
 
-			// needs to set 0 everywhere in the time discretizer
-			this->timeDiscretizers = std::make_shared<cl::Tensor<memorySpace, mathDomain>>(this->inputData.initialCondition.nRows(), this->inputData.initialCondition.nRows(), solverSteps, 0.0);
+			// need to calcualte solution for all the steps > 1
+			for (unsigned step = 1; step < solverSteps; ++step)
+			{
+
+			}
 		}
 	};
 
@@ -119,8 +127,6 @@ namespace pde
 
 			this->solution = std::make_shared<cl::ColumnWiseMatrix<memorySpace, mathDomain>>(dimension * dimension, solverSteps);
 			this->solution->Set(this->inputData.initialCondition.matrices[0], 0);
-
-			// needs to set 0 everywhere in the time discretizer
 			this->timeDiscretizers = std::make_shared<cl::Tensor<memorySpace, mathDomain>>(dimension, dimension, solverSteps);
 		}
 	};

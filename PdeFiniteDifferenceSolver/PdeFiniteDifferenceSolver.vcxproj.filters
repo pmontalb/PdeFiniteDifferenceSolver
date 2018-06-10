@@ -29,5 +29,8 @@
     <ClInclude Include="PdeInputData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IterableEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

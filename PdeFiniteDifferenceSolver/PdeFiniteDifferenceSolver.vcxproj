@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="FiniteDifferenceManager.h" />
     <ClInclude Include="FiniteDifferenceSolver.h" />
+    <ClInclude Include="IterableEnum.h" />
     <ClInclude Include="PdeInputData.h" />
   </ItemGroup>
   <ItemGroup>
