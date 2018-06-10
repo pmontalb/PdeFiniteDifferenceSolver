@@ -125,7 +125,13 @@ namespace pdet
 		{
 			if (solverType == SolverType::AdamsBashforth2)
 				return;  // FIXME: remove it when multi-step methods are implemented
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
+
+			// need to setup the correct boundary condition with the slope of the line
+			BoundaryCondition leftBoundaryCondition(BoundaryConditionType::Neumann, 10.0);
+			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -10.0);
+			BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
+
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, boundaryConditions);
 			pde::sol1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -136,7 +142,7 @@ namespace pdet
 
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
-					//if (fabs(solution[i] - _initialCondition[i]) > 2.5e-5)
+					//if (fabs(solution[i] - _initialCondition[i]) > 1e-7)
 					//{
 					//	int a = 0;
 					//}
