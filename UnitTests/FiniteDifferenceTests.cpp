@@ -34,13 +34,7 @@ namespace pdet
 				const auto solution = solver.solution->columns[0]->Get();
 
 				for (size_t i = 0; i < solution.size(); ++i)
-				{
-					if (fabs(solution[i] - _initialCondition[i]) > 1e-7)
-					{
-						int a = 0;
-					}
 					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 1e-7);
-				}
 			}
 		}
 	}
@@ -66,11 +60,10 @@ namespace pdet
 
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
-					//if (fabs(solution[i] - _initialCondition[i]) > 2.8e-6)
-					//{
-					//	int a = 0;
-					//}
-					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.8e-6);
+					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.8e-6);
+					else
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 3e-5);
 				}
 			}
 		}
@@ -97,11 +90,10 @@ namespace pdet
 
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
-					//if (fabs(solution[i] - _initialCondition[i]) > 5.5e-6)
-					//{
-					//	int a = 0;
-					//}
-					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 5.5e-6);
+					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 5.5e-6);
+					else
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 3e-5);
 				}
 			}
 		}
@@ -133,11 +125,10 @@ namespace pdet
 
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
-					if (fabs(solution[i] - _initialCondition[i]) > 2.7e-5)
-					{
-						int a = 0;
-					}
-					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.7e-5);
+					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.7e-5);
+					else
+						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 5e-4);
 				}
 			}
 		}
