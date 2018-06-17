@@ -37,13 +37,15 @@ namespace pde
 					   const typename cl::Traits<mathDomain>::stdType diffusion,
 					   const double dt,
 					   const SolverType solverType,
+					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
 			:
 			PdeInputData(initialCondition, spaceGrid,
 						 cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, velocity),
 						 cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, diffusion),
 						 dt,
-						 solverType),
+						 solverType,
+						 spaceDiscretizerType),
 			boundaryConditions(boundaryConditions)
 		{
 		}

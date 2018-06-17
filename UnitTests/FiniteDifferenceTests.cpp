@@ -24,7 +24,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::sol1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -49,7 +49,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::sol1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -79,7 +79,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::sol1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -114,7 +114,7 @@ namespace pdet
 			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -10.0);
 			BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
 
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, boundaryConditions);
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
 			pde::sol1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -157,7 +157,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType);
+			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::sol1D solver(data);
 
 			solver.Advance(steps);

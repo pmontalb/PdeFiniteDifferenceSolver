@@ -20,13 +20,14 @@ namespace pde
 					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& diffusion,
 					   const double dt,
 					   const SolverType solverType,
+					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition2D boundaryConditions = BoundaryCondition2D())
-			: initialCondition(initialCondition),
-			spaceGrid(spaceGrid),
-			velocity(velocity),
-			diffusion(diffusion),
-			dt(dt),
-			solverType(solverType),
+			: PdeInputData(initialCondition, spaceGrid,
+						   cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, velocity),
+						   cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, diffusion),
+						   dt,
+						   solverType,
+						   spaceDiscretizerType),
 			boundaryConditions(boundaryConditions)
 		{
 		}

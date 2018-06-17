@@ -41,18 +41,25 @@ namespace pde
 		*/
 		const SolverType solverType;
 
+		/**
+		* Space Discretizer Type
+		*/
+		const SpaceDiscretizerType spaceDiscretizerType;
+
 		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition,
 						const cl::Tensor<memorySpace, mathDomain>& spaceGrid,
 						const cl::Tensor<memorySpace, mathDomain>& velocity,
 						const cl::Tensor<memorySpace, mathDomain>& diffusion,
 						const double dt,
-						const SolverType solverType)
+						const SolverType solverType,
+					    const SpaceDiscretizerType spaceDiscretizerType)
 			: initialCondition(initialCondition),
 			spaceGrid(spaceGrid),
 			velocity(velocity),
 			diffusion(diffusion),
 			dt(dt),
-			solverType(solverType)
+			solverType(solverType),
+			spaceDiscretizerType(spaceDiscretizerType)
 		{
 		}
 

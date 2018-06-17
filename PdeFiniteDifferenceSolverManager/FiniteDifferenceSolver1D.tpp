@@ -16,6 +16,7 @@ namespace pde
 									   inputData.velocity.GetBuffer(),
 									   inputData.diffusion.GetBuffer(),
 									   solverType,
+									   inputData.spaceDiscretizerType,
 									   inputData.boundaryConditions);
 		pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer.GetTile(), _input);
 		pde::detail::MakeTimeDiscretizer1D(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), _input);
@@ -32,6 +33,7 @@ namespace pde
 									   inputData.velocity.GetBuffer(),
 									   inputData.diffusion.GetBuffer(),
 									   solverType,
+									   inputData.spaceDiscretizerType,
 									   inputData.boundaryConditions);
 		pde::detail::Iterate1D(solutionTile, timeDiscretizers->GetCube(), _input, nSteps);
 	}

@@ -12,7 +12,7 @@ INITIAL_CONDITION_FILE = "{}\\ic.npy".format(CWD)
 
 
 def run_transport1D(run=True, show=True, save=False):
-    output_file = "transport.cl"
+    output_file = "transport1.cl"
 
     try:
         os.remove(GRID_FILE)
@@ -20,13 +20,15 @@ def run_transport1D(run=True, show=True, save=False):
     except FileNotFoundError:
         pass
 
+    # grid = np.linspace(-np.pi, np.pi, 128)
+    # ic = np.sin(grid)
     grid = np.linspace(-np.pi, np.pi, 128)
-    ic = np.sin(grid)
+    ic = np.exp(-grid ** 2)
     if run:
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
-        p = Popen([releaseDll] +
+        p = Popen([debugDll] +
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
@@ -35,11 +37,12 @@ def run_transport1D(run=True, show=True, save=False):
                   ["-lbc", "0.0"] +
                   ["-rbct", "Periodic"] +
                   ["-st", "RungeKutta4"] +
+                  ["-sdt", "Upwind"] +
                   ["-d", "0"] +
-                  ["-v", "1"] +
-                  ["-dt", "0.005"] +
-                  ["-n", "10"] +
-                  ["-N", "1000"])
+                  ["-v", ".5"] +
+                  ["-dt", "0.001"] +
+                  ["-n", "1"] +
+                  ["-N", "100"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
@@ -82,4 +85,4 @@ def run_diffusion1D(run=True, show=True, save=False):
 
 
 if __name__ == "__main__":
-    run_transport1D(run=True, show=True, save=False)
+    run_transport1D(run=False, show=True, save=False)
