@@ -21,11 +21,20 @@
   <ItemGroup>
     <ClInclude Include="FiniteDifferenceManager.h" />
     <ClInclude Include="FiniteDifferenceSolver.h" />
+    <ClInclude Include="FiniteDifferenceSolver1D.h" />
+    <ClInclude Include="FiniteDifferenceSolver2D.h" />
     <ClInclude Include="IterableEnum.h" />
     <ClInclude Include="PdeInputData.h" />
+    <ClInclude Include="PdeInputData1D.h" />
+    <ClInclude Include="PdeInputData2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FiniteDifferenceSolver.tpp" />
+    <None Include="FiniteDifferenceSolver1D.tpp" />
+    <None Include="FiniteDifferenceSolver2D.tpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -160,7 +169,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <FloatingPointExceptions>false</FloatingPointExceptions>
     </ClCompile>
     <Link>

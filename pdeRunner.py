@@ -11,8 +11,8 @@ GRID_FILE = "{}\\grid.npy".format(CWD)
 INITIAL_CONDITION_FILE = "{}\\ic.npy".format(CWD)
 
 
-def run_transport1D(run=True, save=False):
-    output_file = "sol.cl"
+def run_transport1D(run=True, show=True, save=False):
+    output_file = "transport.cl"
 
     try:
         os.remove(GRID_FILE)
@@ -20,10 +20,9 @@ def run_transport1D(run=True, save=False):
     except FileNotFoundError:
         pass
 
+    grid = np.linspace(-np.pi, np.pi, 128)
+    ic = np.sin(grid)
     if run:
-        grid = np.linspace(-4.0, 4.0, 128)
-        ic = np.exp(-.25 * grid * grid)
-
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
@@ -31,23 +30,24 @@ def run_transport1D(run=True, save=False):
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
-                  ["-lbct", "Neumann"] +
+                  ["-md", "Double"] +
+                  ["-lbct", "Periodic"] +
                   ["-lbc", "0.0"] +
-                  ["-rbct", "Neumann"] +
-                  ["-st", "CrankNicolson"] +
+                  ["-rbct", "Periodic"] +
+                  ["-st", "RungeKutta4"] +
                   ["-d", "0"] +
                   ["-v", "1"] +
-                  ["-dt", "0.1"] +
-                  ["-n", "1"] +
-                  ["-N", "100"])
+                  ["-dt", "0.005"] +
+                  ["-n", "10"] +
+                  ["-N", "1000"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=False, save=save)
+    animate(solution, grid, show=show, save=save)
 
 
-def run_diffusion1D(run=True, save=False):
-    output_file = "sol.cl"
+def run_diffusion1D(run=True, show=True, save=False):
+    output_file = "diffusion.cl"
 
     try:
         os.remove(GRID_FILE)
@@ -55,10 +55,9 @@ def run_diffusion1D(run=True, save=False):
     except FileNotFoundError:
         pass
 
+    grid = np.linspace(-np.pi, np.pi, 128)
+    ic = np.exp(-.5 * grid * grid)
     if run:
-        grid = np.linspace(-4.0, 4.0, 128)
-        ic = np.exp(-.25 * grid * grid)
-
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
@@ -66,20 +65,21 @@ def run_diffusion1D(run=True, save=False):
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
+                  ["-md", "Double"] +
                   ["-lbct", "Neumann"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Neumann"] +
                   ["-st", "CrankNicolson"] +
                   ["-d", "1"] +
                   ["-v", "0"] +
-                  ["-dt", "0.1"] +
-                  ["-n", "1"] +
+                  ["-dt", "0.005"] +
+                  ["-n", "10"] +
                   ["-N", "100"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=False, save=save)
+    animate(solution, grid, show=show, save=save)
 
 
 if __name__ == "__main__":
-    run_transport1D(run=True, save=True)
+    run_transport1D(run=True, show=True, save=False)

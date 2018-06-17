@@ -4,7 +4,7 @@
 #include <Vector.h>
 #include <ColumnWiseMatrix.h>
 
-#include <FiniteDifferenceSolver.h>
+#include <FiniteDifferenceSolver1D.h>
 #include <IterableEnum.h>
 
 namespace pdet

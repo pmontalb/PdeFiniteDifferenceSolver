@@ -147,7 +147,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -158,6 +158,8 @@
       <PrecompiledHeaderFile />
       <UndefinePreprocessorDefinitions>GTEST_HAS_TR1_TUPLE</UndefinePreprocessorDefinitions>
       <AdditionalOptions>/DGTEST_HAS_TR1_TUPLE=0;/DGTEST_HAS_STD_TUPLE=1 %(AdditionalOptions)</AdditionalOptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

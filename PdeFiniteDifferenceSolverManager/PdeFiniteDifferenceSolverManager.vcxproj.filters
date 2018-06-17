@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Solver">
+      <UniqueIdentifier>{ad061282-19c7-433d-99ff-eec29b9f81ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Solver1D">
+      <UniqueIdentifier>{2463ca61-790b-4dcf-bd01-ef63ae2b4bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Solver2D">
+      <UniqueIdentifier>{b1b111aa-3aaf-4495-b735-6d898a8894f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\InputData">
+      <UniqueIdentifier>{87e3bf2f-4dae-4e02-b397-d9cc78de0e10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp">
@@ -23,14 +35,37 @@
     <ClInclude Include="FiniteDifferenceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FiniteDifferenceSolver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PdeInputData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IterableEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FiniteDifferenceSolver.h">
+      <Filter>Header Files\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="FiniteDifferenceSolver1D.h">
+      <Filter>Header Files\Solver1D</Filter>
+    </ClInclude>
+    <ClInclude Include="FiniteDifferenceSolver2D.h">
+      <Filter>Header Files\Solver2D</Filter>
+    </ClInclude>
+    <ClInclude Include="PdeInputData.h">
+      <Filter>Header Files\InputData</Filter>
+    </ClInclude>
+    <ClInclude Include="PdeInputData1D.h">
+      <Filter>Header Files\InputData</Filter>
+    </ClInclude>
+    <ClInclude Include="PdeInputData2D.h">
+      <Filter>Header Files\InputData</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FiniteDifferenceSolver.tpp">
+      <Filter>Header Files\Solver</Filter>
+    </None>
+    <None Include="FiniteDifferenceSolver1D.tpp">
+      <Filter>Header Files\Solver1D</Filter>
+    </None>
+    <None Include="FiniteDifferenceSolver2D.tpp">
+      <Filter>Header Files\Solver2D</Filter>
+    </None>
   </ItemGroup>
 </Project>
