@@ -12,7 +12,7 @@ INITIAL_CONDITION_FILE = "{}\\ic.npy".format(CWD)
 
 
 def run_transport1D(run=True, show=True, save=False):
-    output_file = "transport1.cl"
+    output_file = "transport.cl"
 
     try:
         os.remove(GRID_FILE)
@@ -20,33 +20,31 @@ def run_transport1D(run=True, show=True, save=False):
     except FileNotFoundError:
         pass
 
-    # grid = np.linspace(-np.pi, np.pi, 128)
-    # ic = np.sin(grid)
     grid = np.linspace(-np.pi, np.pi, 128)
-    ic = np.exp(-grid ** 2)
+    ic = np.sin(grid)
     if run:
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
-        p = Popen([debugDll] +
+        p = Popen([releaseDll] +
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
-                  ["-md", "Double"] +
+                  ["-md", "Single"] +
                   ["-lbct", "Periodic"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Periodic"] +
-                  ["-st", "RungeKutta4"] +
-                  ["-sdt", "Upwind"] +
+                  ["-st", "ExplicitEuler"] +
+                  ["-sdt", "LaxWendroff"] +
                   ["-d", "0"] +
                   ["-v", ".5"] +
-                  ["-dt", "0.001"] +
-                  ["-n", "1"] +
-                  ["-N", "100"])
+                  ["-dt", "0.05"] +
+                  ["-n", "5"] +
+                  ["-N", "1000"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=show, save=save)
+    animate(solution, grid, show=show, save=save, name="lw.gif")
 
 
 def run_diffusion1D(run=True, show=True, save=False):
@@ -81,8 +79,8 @@ def run_diffusion1D(run=True, show=True, save=False):
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=show, save=save)
+    animate(solution, grid, show=show, save=save, name="diffusion")
 
 
 if __name__ == "__main__":
-    run_transport1D(run=False, show=True, save=False)
+    run_transport1D(run=False, show=False, save=True)

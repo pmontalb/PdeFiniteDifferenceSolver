@@ -141,7 +141,8 @@
 #pragma endregion
 
 __CREATE_FUNCTION_2_ARG(MakeSpaceDiscretizer1D, CudaKernelExceptionFactory, MemoryTile, spaceDiscretizer, const FiniteDifferenceInput1D, input);
-__CREATE_FUNCTION_3_ARG(MakeTimeDiscretizer1D, CudaKernelExceptionFactory, MemoryCube, timeDiscretizer, const MemoryTile, spaceDiscretizer, const FiniteDifferenceInput1D, input);
+__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerAdvectionDiffusion, CudaKernelExceptionFactory, MemoryCube, timeDiscretizer, const MemoryTile, spaceDiscretizer, const SolverType, solverType, const double, dt);
+__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerWaveEquation, CudaKernelExceptionFactory, MemoryCube, timeDiscretizer, const MemoryTile, spaceDiscretizer, const SolverType, solverType, const double, dt);
 __CREATE_FUNCTION_4_ARG(Iterate1D, CudaKernelExceptionFactory, MemoryTile, solution, const MemoryCube, timeDiscretizer, const FiniteDifferenceInput1D, input, const unsigned, nSteps);
 
 #pragma region Undef macros

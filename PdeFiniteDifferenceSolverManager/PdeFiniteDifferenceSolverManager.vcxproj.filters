@@ -56,6 +56,15 @@
     <ClInclude Include="PdeInputData2D.h">
       <Filter>Header Files\InputData</Filter>
     </ClInclude>
+    <ClInclude Include="AdvectionDiffusionSolver1D.h">
+      <Filter>Header Files\Solver1D</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvectionDiffusionSolver2D.h">
+      <Filter>Header Files\Solver2D</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveEquationSolver1D.h">
+      <Filter>Header Files\Solver1D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FiniteDifferenceSolver.tpp">

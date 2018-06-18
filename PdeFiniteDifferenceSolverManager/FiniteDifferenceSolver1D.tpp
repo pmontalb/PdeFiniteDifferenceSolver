@@ -4,8 +4,8 @@
 
 namespace pde
 {
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver1D<ms, md>::MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers, const SolverType solverType)
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver1D<solverImpl, ms, md>::MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers, const SolverType solverType)
 	{
 		// reset everything to 0
 		cl::ColumnWiseMatrix<ms, md> spaceDiscretizer(solution->nRows(), solution->nRows(), 0.0);
@@ -19,11 +19,11 @@ namespace pde
 									   inputData.spaceDiscretizerType,
 									   inputData.boundaryConditions);
 		pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer.GetTile(), _input);
-		pde::detail::MakeTimeDiscretizer1D(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), _input);
+		static_cast<solverImpl*>(this)->MakeTimeDiscretizerWorker(timeDiscretizers, spaceDiscretizer, _input);
 	}
 
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver1D<ms, md>::AdvanceImpl(const MemoryTile& solutionTile,
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver1D<solverImpl, ms, md>::AdvanceImpl(const MemoryTile& solutionTile,
 											   const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers,
 											   const SolverType solverType,
 											   const unsigned nSteps)
@@ -38,8 +38,8 @@ namespace pde
 		pde::detail::Iterate1D(solutionTile, timeDiscretizers->GetCube(), _input, nSteps);
 	}
 
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver1D<ms, md>::Setup(const unsigned solverSteps)
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver1D<solverImpl, ms, md>::Setup(const unsigned solverSteps)
 	{
 		this->solution = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(this->inputData.initialCondition.nRows(), solverSteps);
 		this->solution->Set(*this->inputData.initialCondition.matrices[0]->columns[0], solverSteps - 1);

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AdvectionDiffusionSolver1D.h" />
+    <ClInclude Include="AdvectionDiffusionSolver2D.h" />
     <ClInclude Include="FiniteDifferenceManager.h" />
     <ClInclude Include="FiniteDifferenceSolver.h" />
     <ClInclude Include="FiniteDifferenceSolver1D.h" />
@@ -27,6 +29,7 @@
     <ClInclude Include="PdeInputData.h" />
     <ClInclude Include="PdeInputData1D.h" />
     <ClInclude Include="PdeInputData2D.h" />
+    <ClInclude Include="WaveEquationSolver1D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp" />

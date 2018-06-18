@@ -5,14 +5,14 @@
 
 namespace pde
 {
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver2D<ms, md>::MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers, const SolverType solverType)
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver2D<solverImpl, ms, md>::MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers, const SolverType solverType)
 	{
 		throw NotImplementedException();
 	}
 
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver2D<ms, md>::AdvanceImpl(const MemoryTile& solutionTile,
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver2D<solverImpl, ms, md>::AdvanceImpl(const MemoryTile& solutionTile,
 											   const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers,
 											   const SolverType solverType,
 											   const unsigned nSteps = 1)
@@ -20,8 +20,8 @@ namespace pde
 		throw NotImplementedException();
 	}
 
-	template<MemorySpace ms, MathDomain md>
-	void FiniteDifferenceSolver2D<ms, md>::Setup(const unsigned solverSteps)
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver2D<solverImpl, ms, md>::Setup(const unsigned solverSteps)
 	{
 		const unsigned dimension = this->inputData.initialCondition.nRows(), this->inputData.initialCondition.nCols();
 

@@ -4,17 +4,17 @@
 #include <Vector.h>
 #include <ColumnWiseMatrix.h>
 
-#include <FiniteDifferenceSolver1D.h>
+#include <AdvectionDiffusionSolver1D.h>
 #include <IterableEnum.h>
 
 namespace pdet
 {
-	class FiniteDifferenceTests : public ::testing::Test
+	class AdvectionDiffusionTests : public ::testing::Test
 	{
 
 	};
 
-	TEST_F(FiniteDifferenceTests, ConstantSolutionNoTransportNoDiffusion)
+	TEST_F(AdvectionDiffusionTests, ConstantSolutionNoTransportNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -39,7 +39,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(FiniteDifferenceTests, ConstantSolutionNoDiffusion)
+	TEST_F(AdvectionDiffusionTests, ConstantSolutionNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -69,7 +69,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(FiniteDifferenceTests, ConstantSolution)
+	TEST_F(AdvectionDiffusionTests, ConstantSolution)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -99,7 +99,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(FiniteDifferenceTests, LinearSolutionNoTransport)
+	TEST_F(AdvectionDiffusionTests, LinearSolutionNoTransport)
 	{
 		cl::vec initialCondition = cl::LinSpace(0.0f, 10.0f, 10);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -134,7 +134,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(FiniteDifferenceTests, SineSolutionNoDiffusion)
+	TEST_F(AdvectionDiffusionTests, SineSolutionNoDiffusion)
 	{
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, 10);
 		auto _grid = grid.Get();

@@ -175,7 +175,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FiniteDifferenceTests.cpp" />
+    <ClCompile Include="AdvectionDiffusionTests.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

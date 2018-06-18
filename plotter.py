@@ -5,10 +5,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 
-def __ax_formatter(ax, title="", x_label="", y_label="", show_legend=False):
+def __ax_formatter(ax, grid=False, title="", x_label="", y_label="", show_legend=False):
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+
+    if grid:
+        ax.grid()
 
     if show_legend:
         ax.legend(loc='best')
@@ -23,29 +26,31 @@ def surf(z, x, y, title="", x_label="", y_label="", show_legend=False, show=Fals
 
     ax.plot_surface(x_grid, y_grid, z, cmap=cm.coolwarm, rstride=16, cstride=16, antialiased=True)
 
-    __ax_formatter(ax, title, x_label, y_label, show_legend)
+    __ax_formatter(ax, False, title, x_label, y_label, show_legend)
 
     if show:
         plt.show()
 
 
-def plot(z, x, title="", x_label="", y_label="", show_legend=False, show=False):
+def plot(z, x, grid=False, title="", x_label="", y_label="", show_legend=False, show=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
     for i in range(len(x)):
         ax.plot(z[:, i])
 
-    __ax_formatter(ax, title, x_label, y_label, show_legend)
+    __ax_formatter(ax, grid, title, x_label, y_label, show_legend)
 
     if show:
         plt.show()
 
 
-def animate(z, x, show=False, save=False, name=""):
+def animate(z, x, grid=False, show=False, save=False, name=""):
     fig, ax = plt.subplots()
 
     line, = ax.plot(x, z[:, 0])
+    if grid:
+        ax.grid()
 
     def update_line(i):
         if i >= z.shape[1]:
@@ -64,7 +69,7 @@ def animate(z, x, show=False, save=False, name=""):
         plt.show()
 
     if save:
-        ani.save(name, writer='imagemagick', fps=60)
+        ani.save(name, fps=60)
 
 
 def animate_3D(z, x, y, rstride=1, cstride=1, cmap=cm.coolwarm, show=False, save=False, name=""):

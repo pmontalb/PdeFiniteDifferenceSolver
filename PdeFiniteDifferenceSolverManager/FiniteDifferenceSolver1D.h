@@ -19,11 +19,14 @@
 
 namespace pde
 {
-	template<MemorySpace memorySpace = MemorySpace::Device, MathDomain mathDomain = MathDomain::Float>
-	class FiniteDifferenceSolver1D : public FiniteDifferenceSolver<FiniteDifferenceSolver1D<memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
+	/**
+	* CRTP implementation
+	*/
+	template<class solverImpl, MemorySpace memorySpace = MemorySpace::Device, MathDomain mathDomain = MathDomain::Float>
+	class FiniteDifferenceSolver1D : public FiniteDifferenceSolver<FiniteDifferenceSolver1D<solverImpl, memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
 	{
 	public:
-		friend class FiniteDifferenceSolver<FiniteDifferenceSolver1D<memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+		friend class FiniteDifferenceSolver<FiniteDifferenceSolver1D<solverImpl, memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 		using FiniteDifferenceSolver::FiniteDifferenceSolver;
 
 		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver1D);
@@ -38,19 +41,6 @@ namespace pde
 
 		void Setup(const unsigned solverSteps);
 	};
-
-#pragma region Type aliases
-
-	typedef FiniteDifferenceSolver1D<MemorySpace::Device, MathDomain::Float> GpuSinglePdeSolver1D; 
-	typedef GpuSinglePdeSolver1D GpuFloatSolver1D; 
-	typedef FiniteDifferenceSolver1D<MemorySpace::Device, MathDomain::Double> GpuDoublePdeSolver1D; 
-	typedef FiniteDifferenceSolver1D<MemorySpace::Host, MathDomain::Float> CpuSinglePdeSolver1D; 
-	typedef CpuSinglePdeSolver1D CpuFloatSolver1D; 
-	typedef FiniteDifferenceSolver1D<MemorySpace::Host, MathDomain::Double> CpuDoubleSolver1D; 
-	typedef GpuSinglePdeSolver1D sol1D; 
-	typedef GpuDoublePdeSolver1D dsol1D;
-
-#pragma endregion
 }
 
 #undef MAKE_DEFAULT_CONSTRUCTORS
