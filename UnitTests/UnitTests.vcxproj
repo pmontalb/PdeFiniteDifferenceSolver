@@ -177,6 +177,7 @@
   <ItemGroup>
     <ClCompile Include="AdvectionDiffusionTests.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WaveEquationTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

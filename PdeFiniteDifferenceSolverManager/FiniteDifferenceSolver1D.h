@@ -23,18 +23,16 @@ namespace pde
 	* CRTP implementation
 	*/
 	template<class solverImpl, MemorySpace memorySpace = MemorySpace::Device, MathDomain mathDomain = MathDomain::Float>
-	class FiniteDifferenceSolver1D : public FiniteDifferenceSolver<FiniteDifferenceSolver1D<solverImpl, memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
+	class FiniteDifferenceSolver1D : public FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
 	{
 	public:
-		friend class FiniteDifferenceSolver<FiniteDifferenceSolver1D<solverImpl, memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+		friend class FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 		using FiniteDifferenceSolver::FiniteDifferenceSolver;
 
 		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver1D);
 
 	protected:
-		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType);
-
-		void AdvanceImpl(const MemoryTile& solutionTile,
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution,
 						 const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers,
 						 const SolverType solverType,
 						 const unsigned nSteps = 1);

@@ -15,7 +15,7 @@ namespace pde
 	template<class pdeImpl, class pdeInputType, MemorySpace ms, MathDomain md>
 	void FiniteDifferenceSolver<pdeImpl, pdeInputType, ms, md>::Advance(const unsigned nSteps)
 	{
-		static_cast<pdeImpl*>(this)->AdvanceImpl(solution->GetTile(), timeDiscretizers, inputData.solverType, nSteps);
+		static_cast<pdeImpl*>(this)->AdvanceImpl(*solution, timeDiscretizers, inputData.solverType, nSteps);
 	}
 
 	template<class pdeImpl, class pdeInputType, MemorySpace ms, MathDomain md>

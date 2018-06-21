@@ -38,6 +38,8 @@ namespace pde
 		const pdeInputType& inputData;
 	protected:
 		std::shared_ptr<cl::Tensor<memorySpace, mathDomain>> timeDiscretizers;
+		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> spaceDiscretizer;
+		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solutionDerivative;
 	};
 }
 

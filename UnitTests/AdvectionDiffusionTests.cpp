@@ -25,7 +25,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::sol1D solver(data);
+			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -50,7 +50,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::sol1D solver(data);
+			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 0; n < 10; ++n)
@@ -80,7 +80,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::sol1D solver(data);
+			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -115,7 +115,7 @@ namespace pdet
 			BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
 
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
-			pde::sol1D solver(data);
+			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -158,19 +158,13 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::sol1D solver(data);
+			pde::ad1D solver(data);
 
 			solver.Advance(steps);
 			const auto solution = solver.solution->columns[0]->Get();
 
 			for (size_t i = 1; i < solution.size() - 1; ++i)  // excluding BC
-			{
-				//if (fabs(solution[i] - _exactSolution[i]) > 1.1e-4)
-				//{
-				//	int a = 0;
-				//}
 				ASSERT_TRUE(fabs(solution[i] - _exactSolution[i]) <= 1.1e-4);
-			}
 			
 		}
 	}

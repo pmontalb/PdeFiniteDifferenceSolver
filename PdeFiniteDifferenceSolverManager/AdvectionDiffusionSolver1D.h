@@ -15,17 +15,31 @@ namespace pde
 	class AdvectionDiffusionSolver1D : public FiniteDifferenceSolver1D<AdvectionDiffusionSolver1D<memorySpace, mathDomain>, memorySpace, mathDomain>
 	{
 	public:
+		// befriend the grandparent CRTP class
+		friend class FiniteDifferenceSolver<AdvectionDiffusionSolver1D<memorySpace, mathDomain>, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+		// befriend the mother CRTP class
 		friend class FiniteDifferenceSolver1D<AdvectionDiffusionSolver1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+		
 		using FiniteDifferenceSolver1D::FiniteDifferenceSolver1D;
 
 		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver1D);
 
 	protected:
-		void MakeTimeDiscretizerWorker(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, 
-									   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& spaceDiscretizer,
-									   const FiniteDifferenceInput1D& input)
+		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType)
 		{
-			pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), input.solverType, input.dt);
+			// reset everything to 0
+			spaceDiscretizer = std::make_shared<cl::ColumnWiseMatrix<memorySpace, mathDomain>>(solution->nRows(), solution->nRows(), 0.0);
+			timeDiscretizers->Set(0.0);
+
+			FiniteDifferenceInput1D _input(inputData.dt,
+										   inputData.spaceGrid.GetBuffer(),
+										   inputData.velocity.GetBuffer(),
+										   inputData.diffusion.GetBuffer(),
+										   solverType,
+										   inputData.spaceDiscretizerType,
+										   inputData.boundaryConditions);
+			pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer->GetTile(), _input);
+			pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), spaceDiscretizer->GetTile(), solverType, inputData.dt);
 		}
 	};
 
@@ -37,8 +51,8 @@ namespace pde
 	typedef AdvectionDiffusionSolver1D<MemorySpace::Host, MathDomain::Float> CpuSingleAdvectionDiffusionSolver1D;
 	typedef CpuSingleAdvectionDiffusionSolver1D CpuFloatAdvectionDiffusionSolver1D;
 	typedef AdvectionDiffusionSolver1D<MemorySpace::Host, MathDomain::Double> CpuDoubleAdvectionDiffusionSolver1D;
-	typedef GpuSingleAdvectionDiffusionSolver1D sol1D;
-	typedef GpuDoubleAdvectionDiffusionSolver1D dsol1D;
+	typedef GpuSingleAdvectionDiffusionSolver1D ad1D;
+	typedef GpuDoubleAdvectionDiffusionSolver1D dad1D;
 
 #pragma endregion
 }

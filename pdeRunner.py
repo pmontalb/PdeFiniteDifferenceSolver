@@ -82,5 +82,42 @@ def run_diffusion1D(run=True, show=True, save=False):
     animate(solution, grid, show=show, save=save, name="diffusion")
 
 
+def run_wave1D(run=True, show=True, save=False):
+    output_file = "wave1.cl"
+
+    try:
+        os.remove(GRID_FILE)
+        os.remove(INITIAL_CONDITION_FILE)
+    except FileNotFoundError:
+        pass
+
+    grid = np.linspace(-np.pi, np.pi, 128)
+    ic = np.sin(grid)
+    if run:
+        np.savetxt(GRID_FILE, grid)
+        np.savetxt(INITIAL_CONDITION_FILE, ic)
+
+        p = Popen([debugDll] +
+                  ["-ic", INITIAL_CONDITION_FILE] +
+                  ["-g", GRID_FILE] +
+                  ["-of", output_file] +
+                  ["-md", "Single"] +
+                  ["-lbct", "Neumann"] +
+                  ["-lbc", "0.0"] +
+                  ["-rbct", "Neumann"] +
+                  ["-st", "ExplicitEuler"] +
+                  ["-sdt", "Central"] +
+                  ["-pde", "WaveEquation"] +
+                  ["-d", "0"] +
+                  ["-v", ".5"] +
+                  ["-dt", "0.05"] +
+                  ["-n", "5"] +
+                  ["-N", "1000"])
+        p.communicate()
+
+    solution = np.loadtxt(output_file)
+    animate(solution, grid, show=show, save=save, name="lw.gif")
+
+
 if __name__ == "__main__":
-    run_transport1D(run=False, show=False, save=True)
+    run_wave1D(run=False, show=True, save=False)
