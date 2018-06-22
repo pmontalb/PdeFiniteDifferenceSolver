@@ -57,12 +57,14 @@ namespace pde
 				workBuffer.ReadFrom(*inSol);  // w = u_n
 				workBuffer.AddEqual(*inDer, inputData.dt);  // w = u_n + dt * v_n
 				cl::Multiply(*outSol, *timeDiscretizers->matrices[0], workBuffer);
+				pde::detail::SetBoundaryConditions1D(outSol->GetBuffer(), _input);
 				// outSol = u_{n + 1} = A * (u_n + dt * v_n)
 
 				// v' = L * u ==> v_{n + 1} = A * (v_n + dt * L * u_n)
 				cl::Multiply(workBuffer, *spaceDiscretizer, *inSol, MatrixOperation::None, MatrixOperation::None, inputData.dt);  // w = L * u_n * dt
 				workBuffer.AddEqual(*inDer);  // w = v_n + dt * L * u_n
 				cl::Multiply(*outDer, *timeDiscretizers->matrices[0], workBuffer);
+				pde::detail::SetBoundaryConditions1D(outDer->GetBuffer(), _input);
 				// outDer = v_{n + 1} = A * (v_n + dt * L * u_n)
 
 				std::swap(inSol, outSol);

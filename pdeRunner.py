@@ -83,7 +83,7 @@ def run_diffusion1D(run=True, show=True, save=False):
 
 
 def run_wave1D(run=True, show=True, save=False):
-    output_file = "wave1.cl"
+    output_file = "wave.cl"
 
     try:
         os.remove(GRID_FILE)
@@ -92,27 +92,27 @@ def run_wave1D(run=True, show=True, save=False):
         pass
 
     grid = np.linspace(-np.pi, np.pi, 128)
-    ic = np.sin(grid)
+    ic = np.exp(-grid * grid)
     if run:
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
-        p = Popen([debugDll] +
+        p = Popen([releaseDll] +
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
-                  ["-md", "Single"] +
-                  ["-lbct", "Neumann"] +
+                  ["-md", "Double"] +
+                  ["-lbct", "Dirichlet"] +
                   ["-lbc", "0.0"] +
-                  ["-rbct", "Neumann"] +
+                  ["-rbct", "Dirichlet"] +
                   ["-st", "ExplicitEuler"] +
                   ["-sdt", "Central"] +
                   ["-pde", "WaveEquation"] +
                   ["-d", "0"] +
-                  ["-v", ".5"] +
-                  ["-dt", "0.05"] +
-                  ["-n", "5"] +
-                  ["-N", "1000"])
+                  ["-v", ".05"] +
+                  ["-dt", "0.0001"] +
+                  ["-n", "100"] +
+                  ["-N", "500"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
@@ -120,4 +120,4 @@ def run_wave1D(run=True, show=True, save=False):
 
 
 if __name__ == "__main__":
-    run_wave1D(run=False, show=True, save=False)
+    run_wave1D(run=True, show=True, save=False)
