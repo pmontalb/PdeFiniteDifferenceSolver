@@ -36,9 +36,9 @@ namespace pde
 	typedef AdvectionDiffusionSolver2D<MemorySpace::Device, MathDomain::Double> GpuDoubleAdvectionDiffusionSolver2D;
 	typedef AdvectionDiffusionSolver2D<MemorySpace::Host, MathDomain::Float> CpuSingleAdvectionDiffusionSolver2D;
 	typedef CpuSingleAdvectionDiffusionSolver2D CpuFloatAdvectionDiffusionSolver2D;
-	typedef AdvectionDiffusionSolver2D<MemorySpace::Host, MathDomain::Double> CpuDoubleSolver2D;
-	typedef GpuSingleAdvectionDiffusionSolver2D sol2D;
-	typedef GpuDoubleAdvectionDiffusionSolver2D dsol2D;
+	typedef AdvectionDiffusionSolver2D<MemorySpace::Host, MathDomain::Double> CpuDoubleAdvectionDiffusionSolver2D;
+	typedef GpuSingleAdvectionDiffusionSolver2D ad2D;
+	typedef GpuDoubleAdvectionDiffusionSolver2D dad2D;
 
 #pragma endregion
 }
