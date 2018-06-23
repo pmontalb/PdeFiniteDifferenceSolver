@@ -1,4 +1,4 @@
-# PdeFiniteDifferenceSolver# CudaLight
+# PdeFiniteDifferenceSolver
 C++ manager class for PdeFiniteDifferenceKernels API. The low level calls are managed in the namespace <i>pde::detail DeviceManager</i>, whereas the high level infrastructure is delegated to the particular solver type. 
 
 Only linear hyperbolic and parabolic PDEs are supported (up to 3D). The exposed implementation is through:
