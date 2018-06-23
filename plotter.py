@@ -45,10 +45,10 @@ def plot(z, x, grid=False, title="", x_label="", y_label="", show_legend=False, 
         plt.show()
 
 
-def animate(z, x, grid=False, show=False, save=False, name=""):
+def animate(z, x, grid=False, show=False, save=False, label="", name="", y_lim=None):
     fig, ax = plt.subplots()
 
-    line, = ax.plot(x, z[:, 0])
+    line, = ax.plot(x, z[:, 0], label=label)
     if grid:
         ax.grid()
 
@@ -68,8 +68,59 @@ def animate(z, x, grid=False, show=False, save=False, name=""):
     if show:
         plt.show()
 
+    if y_lim is not None:
+        ax.set_ylim(y_lim)
+
     if save:
-        ani.save(name, fps=60)
+        ani.save(name, fps=60, writer="imagemagick")
+
+
+def animate_multicurve(z_vector, x_vector, grid=False, show=False, save=False, labels=None, name="",
+                       y_lim=None):
+    assert(len(z_vector) == len(x_vector))
+
+    fig, ax = plt.subplots()
+
+    lines = []
+
+    # Init only required for blitting to give a clean slate.
+    def init():
+        for line in lines:
+            line.set_ydata(z[:, 0])
+        return tuple(lines)
+
+    def update_line(i):
+        if i >= z.shape[1]:
+            return tuple(lines)
+        for j, line in enumerate(lines):
+            line.set_ydata(z_vector[j][:, i])  # update the data
+        return tuple(lines)
+
+    show_legend = True
+    if labels is None:
+        show_legend = False
+        labels = [""] * len(x_vector)
+    for x, z, l in zip(x_vector, z_vector, labels):
+        line, = ax.plot(x, z[:, 0], label=l)
+        lines.append(line)
+
+    if grid:
+        ax.grid()
+
+    if show_legend:
+        ax.legend(loc='best')
+
+    if y_lim is not None:
+        ax.set_ylim(y_lim)
+
+    ani = animation.FuncAnimation(fig, update_line, np.arange(1, 200), init_func=init, interval=25, blit=True)
+
+    if save:
+        ani.save(name, fps=60, writer="imagemagick")
+
+    if show:
+        plt.show()
+
 
 
 def animate_3D(z, x, y, rstride=1, cstride=1, cmap=cm.coolwarm, show=False, save=False, name=""):

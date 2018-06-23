@@ -11,8 +11,11 @@ GRID_FILE = "{}\\grid.npy".format(CWD)
 INITIAL_CONDITION_FILE = "{}\\ic.npy".format(CWD)
 
 
-def run_transport1D(run=True, show=True, save=False):
-    output_file = "transport.cl"
+def run_transport_1D(space_discretizer="LaxWendroff",
+                     output_file="transport.cl",
+                     name="transport.gif",
+                     run=True, show=True, show_grid=False, save=False,
+                     run_animation=True):
 
     try:
         os.remove(GRID_FILE)
@@ -26,29 +29,33 @@ def run_transport1D(run=True, show=True, save=False):
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
-        p = Popen([releaseDll] +
+        p = Popen([debugDll] +
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
-                  ["-md", "Single"] +
+                  ["-md", "Float"] +
                   ["-lbct", "Periodic"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Periodic"] +
                   ["-st", "ExplicitEuler"] +
-                  ["-sdt", "LaxWendroff"] +
+                  ["-sdt", space_discretizer] +
                   ["-d", "0"] +
                   ["-v", ".5"] +
-                  ["-dt", "0.05"] +
-                  ["-n", "5"] +
-                  ["-N", "1000"])
+                  ["-dt", "0.005"] +
+                  ["-n", "25"] +
+                  ["-N", "500"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=show, save=save, name="lw.gif")
+    if run_animation:
+        animate(solution, grid, show=show, save=save, grid=show_grid, name=name)
+
+    return grid, solution
 
 
-def run_diffusion1D(run=True, show=True, save=False):
-    output_file = "diffusion.cl"
+def run_diffusion_1D(solver_type="CrankNicolson", output_file="diffusion.cl", name="diffusion.gif",
+                     run=True, show=True, show_grid=False, save=False,
+                     run_animation=True):
 
     try:
         os.remove(GRID_FILE)
@@ -70,20 +77,24 @@ def run_diffusion1D(run=True, show=True, save=False):
                   ["-lbct", "Neumann"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Neumann"] +
-                  ["-st", "CrankNicolson"] +
+                  ["-st", solver_type] +
                   ["-d", "1"] +
                   ["-v", "0"] +
-                  ["-dt", "0.005"] +
-                  ["-n", "10"] +
-                  ["-N", "100"])
+                  ["-dt", "0.0003"] +
+                  ["-n", "20"] +
+                  ["-N", "200"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=show, save=save, name="diffusion")
+    if run_animation:
+        animate(solution, grid, show=show, save=save, grid=show_grid, name=name)
+
+    return grid, solution
 
 
-def run_wave1D(run=True, show=True, save=False):
-    output_file = "wave.cl"
+def run_wave_1D(solver_type="CrankNicolson",
+                output_file="wave.cl", name="wave.gif", run=True, show=True, show_grid=False, save=False,
+                run_animation=True):
 
     try:
         os.remove(GRID_FILE)
@@ -105,19 +116,59 @@ def run_wave1D(run=True, show=True, save=False):
                   ["-lbct", "Dirichlet"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Dirichlet"] +
-                  ["-st", "ExplicitEuler"] +
-                  ["-sdt", "Central"] +
+                  ["-st", solver_type] +
                   ["-pde", "WaveEquation"] +
                   ["-d", "0"] +
                   ["-v", ".05"] +
-                  ["-dt", "0.0001"] +
+                  ["-dt", "0.0015"] +
                   ["-n", "100"] +
-                  ["-N", "500"])
+                  ["-N", "50"])
         p.communicate()
 
     solution = np.loadtxt(output_file)
-    animate(solution, grid, show=show, save=save, name="lw.gif")
+
+    if run_animation:
+        animate(solution, grid, show=show, grid=show_grid, save=save, name=name)
+
+    return grid, solution
+
+
+def __compare_solver_worker(worker, solver_list,
+                            run=True, show=True, show_grid=False, save=False, name="comparison.gif",
+                            y_lim=None):
+    out = []
+    for solver in solver_list:
+        out.append(worker(solver, "{}.cl".format(solver), run=run, show=False,
+                          show_grid=show_grid, save=False, run_animation=False))
+
+    animate_multicurve([x[1] for x in out], [x[0] for x in out], grid=show_grid, show=show,
+                       labels=solver_list, save=save, name=name, y_lim=y_lim)
+
+
+def compare_solvers_transport_1D(solver_list, run=True, show=True, show_grid=False, save=False, name="comparison.gif"):
+    __compare_solver_worker(run_transport_1D, solver_list,
+                            run=run, show=show, show_grid=show_grid, save=save, name=name)
+
+
+def compare_solvers_diffusion_1D(solver_list, run=True, show=True, show_grid=False, save=False, name="comparison.gif"):
+    __compare_solver_worker(run_diffusion_1D, solver_list,
+                            run=run, show=show, show_grid=show_grid, save=save, name=name)
+
+
+def compare_solvers_wave_1D(solver_list, run=True, show=True, show_grid=False, save=False, name="comparison.gif"):
+    __compare_solver_worker(run_wave_1D, solver_list,
+                            run=run, show=show, show_grid=show_grid, save=save, name=name, y_lim=(-1.1, 1.1))
 
 
 if __name__ == "__main__":
-    run_wave1D(run=True, show=True, save=False)
+
+    # compare_solvers_transport_1D(["LaxWendroff", "Upwind"], run=False, show=True, show_grid=True,
+    #                              save=True, name="numericalDiffusion.gif")
+
+    # compare_solvers_diffusion_1D(["AdamsBashforth2", "AdamsMouldon2", "CrankNicolson"],
+    #                              run=False, show=True, show_grid=True,
+    #                              save=True, name="multiStep.gif")
+
+    compare_solvers_wave_1D(["ExplicitEuler", "ImplicitEuler"],
+                            run=True, show=True, show_grid=True,
+                            save=True, name="waveInstability1D.gif")
