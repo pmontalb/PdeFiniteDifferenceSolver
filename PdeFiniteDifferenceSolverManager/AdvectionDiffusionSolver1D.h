@@ -25,22 +25,7 @@ namespace pde
 		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver1D);
 
 	protected:
-		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType)
-		{
-			// reset everything to 0
-			spaceDiscretizer = std::make_shared<cl::ColumnWiseMatrix<memorySpace, mathDomain>>(solution->nRows(), solution->nRows(), 0.0);
-			timeDiscretizers->Set(0.0);
-
-			FiniteDifferenceInput1D _input(inputData.dt,
-										   inputData.spaceGrid.GetBuffer(),
-										   inputData.velocity.GetBuffer(),
-										   inputData.diffusion.GetBuffer(),
-										   solverType,
-										   inputData.spaceDiscretizerType,
-										   inputData.boundaryConditions);
-			pde::detail::MakeSpaceDiscretizer1D(spaceDiscretizer->GetTile(), _input);
-			pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), spaceDiscretizer->GetTile(), solverType, inputData.dt);
-		}
+		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType);
 	};
 
 #pragma region Type aliases
@@ -58,4 +43,6 @@ namespace pde
 }
 
 #undef MAKE_DEFAULT_CONSTRUCTORS
+
+#include <AdvectionDiffusionSolver1D.tpp>
 

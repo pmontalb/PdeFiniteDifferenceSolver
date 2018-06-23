@@ -35,9 +35,11 @@
     <ClCompile Include="FiniteDifferenceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AdvectionDiffusionSolver1D.tpp" />
     <None Include="FiniteDifferenceSolver.tpp" />
     <None Include="FiniteDifferenceSolver1D.tpp" />
     <None Include="FiniteDifferenceSolver2D.tpp" />
+    <None Include="WaveEquationSolver1D.tpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
