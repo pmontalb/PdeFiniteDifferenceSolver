@@ -60,7 +60,7 @@ I wrote a simple python script for plotting the results:
 
 ### Parabolic: heat equation, advection-diffusion equation
 - Numerical instability of Explicit Euler scheme <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/diffusionInstability_compressed.gif"> </p>
-- Numerical instability of Gauss-Legendre (4th order diagonally implicit Runge-Kutta) <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/rungeKuttaFourthOrderDiffusionInstability_compressed.gif"> </p>
+- Numerical instability of Gauss-Legendre (4th order diagonally implicit Runge-Kutta) <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/rungeKuttaFourthOrderImplicitDiffusionInstability_compressed.gif"> </p>
 
 ### Hyperbolic - second order: wave equation
 - Numerical instability of Implicit/Explicit Euler scheme <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/waveInstability1D_compressed.gif"> </p>
