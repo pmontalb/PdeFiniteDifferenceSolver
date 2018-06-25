@@ -10,6 +10,9 @@ releaseDll = "{}\\x64\\Release\\PdeFiniteDifferenceSolver.exe".format(CWD)
 GRID_FILE = "{}\\grid.npy".format(CWD)
 INITIAL_CONDITION_FILE = "{}\\ic.npy".format(CWD)
 
+X_GRID_FILE = "{}\\x_grid.npy".format(CWD)
+Y_GRID_FILE = "{}\\y_grid.npy".format(CWD)
+
 
 def run_transport_1D(space_discretizer="LaxWendroff",
                      output_file="transport.cl",
@@ -29,7 +32,7 @@ def run_transport_1D(space_discretizer="LaxWendroff",
         np.savetxt(GRID_FILE, grid)
         np.savetxt(INITIAL_CONDITION_FILE, ic)
 
-        p = Popen([debugDll] +
+        p = Popen([releaseDll] +
                   ["-ic", INITIAL_CONDITION_FILE] +
                   ["-g", GRID_FILE] +
                   ["-of", output_file] +
@@ -160,15 +163,69 @@ def compare_solvers_wave_1D(solver_list, run=True, show=True, show_grid=False, s
                             run=run, show=show, show_grid=show_grid, save=save, name=name, y_lim=(-1.1, 1.1))
 
 
+def run_transport_2D(space_discretizer="LaxWendroff",
+                     output_file="transport2d.cl",
+                     name="transport2d.gif",
+                     run=True, show=True, save=False,
+                     run_animation=True):
+
+    try:
+        os.remove(X_GRID_FILE)
+        os.remove(Y_GRID_FILE)
+        os.remove(INITIAL_CONDITION_FILE)
+    except FileNotFoundError:
+        pass
+
+    x_grid = np.linspace(-np.pi, np.pi, 128)
+    y_grid = np.linspace(-np.pi, np.pi, 128)
+    X, Y = np.meshgrid(x_grid, y_grid)
+    ic = np.exp(-X ** 2 - Y ** 2)
+    if run:
+        np.savetxt(X_GRID_FILE, x_grid)
+        np.savetxt(Y_GRID_FILE, x_grid)
+        np.savetxt(INITIAL_CONDITION_FILE, ic)
+
+        p = Popen([releaseDll] +
+                  ["-dbg"] +
+                  ["-dim", "2"] +
+                  ["-ic", INITIAL_CONDITION_FILE] +
+                  ["-gx", X_GRID_FILE] +
+                  ["-gy", Y_GRID_FILE] +
+                  ["-of", output_file] +
+                  ["-md", "Double"] +
+                  ["-lbct", "Periodic"] +
+                  ["-lbc", "0.0"] +
+                  ["-rbct", "Periodic"] +
+                  ["-st", "ExplicitEuler"] +
+                  ["-sdt", space_discretizer] +
+                  ["-d", "0"] +
+                  ["-vx", ".5"] +
+                  ["-vy", ".25"] +
+                  ["-dt", "0.0005"] +
+                  ["-n", "25"] +
+                  ["-N", "500"])
+        p.communicate()
+
+    _solution = np.loadtxt(output_file)
+    solution = np.array([_solution[:, i].reshape((len(x_grid), len(y_grid))) for i in range(_solution.shape[1])])
+    if run_animation:
+        animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=8, cstride=8)
+
+    return x_grid, y_grid, solution
+
+
+
 if __name__ == "__main__":
 
-    # compare_solvers_transport_1D(["LaxWendroff", "Upwind"], run=False, show=True, show_grid=True,
-    #                              save=True, name="numericalDiffusion.gif")
+    # compare_solvers_transport_1D(["LaxWendroff", "Upwind"], run=True, show=True, show_grid=True,
+    #                              save=False, name="numericalDiffusion.gif")
 
     # compare_solvers_diffusion_1D(["AdamsBashforth2", "AdamsMouldon2", "CrankNicolson"],
     #                              run=False, show=True, show_grid=True,
     #                              save=True, name="multiStep.gif")
 
-    compare_solvers_wave_1D(["ExplicitEuler", "ImplicitEuler"],
-                            run=True, show=True, show_grid=True,
-                            save=True, name="waveInstability1D.gif")
+    # compare_solvers_wave_1D(["ExplicitEuler", "ImplicitEuler"],
+    #                         run=True, show=True, show_grid=True,
+    #                         save=True, name="waveInstability1D.gif")
+
+    run_transport_2D(run=False)

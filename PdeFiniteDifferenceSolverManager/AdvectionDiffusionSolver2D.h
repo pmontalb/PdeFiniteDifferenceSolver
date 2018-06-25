@@ -15,18 +15,17 @@ namespace pde
 	class AdvectionDiffusionSolver2D : public FiniteDifferenceSolver2D<AdvectionDiffusionSolver2D<memorySpace, mathDomain>, memorySpace, mathDomain>
 	{
 	public:
+		// befriend the grandparent CRTP class
+		friend class FiniteDifferenceSolver<AdvectionDiffusionSolver2D<memorySpace, mathDomain>, PdeInputData2D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+		// befriend the mother CRTP class
 		friend class FiniteDifferenceSolver2D<AdvectionDiffusionSolver2D<memorySpace, mathDomain>, memorySpace, mathDomain>;
+
 		using FiniteDifferenceSolver2D::FiniteDifferenceSolver2D;
 
 		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver2D);
 
 	protected:
-		void MakeTimeDiscretizerWorker(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers,
-									   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& spaceDiscretizer,
-									   const FiniteDifferenceInput2D& input)
-		{
-			pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), spaceDiscretizer.GetTile(), input.solverType, input.dt);
-		}
+		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType);
 	};
 
 #pragma region Type aliases
@@ -45,4 +44,5 @@ namespace pde
 
 #undef MAKE_DEFAULT_CONSTRUCTORS
 
-#pragma once
+#include <AdvectionDiffusionSolver2D.tpp>
+

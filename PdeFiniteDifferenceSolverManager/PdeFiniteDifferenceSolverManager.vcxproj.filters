@@ -31,6 +31,9 @@
     <Filter Include="Header Files\Solver1D\WaveEquation">
       <UniqueIdentifier>{d5cfc148-e36f-4b88-b45a-67a85a52bf52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Solver2D\AdvectionDiffusion">
+      <UniqueIdentifier>{c6b0e9e2-15f9-4d17-8ac0-c4e22d0500a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp">
@@ -62,14 +65,14 @@
     <ClInclude Include="PdeInputData2D.h">
       <Filter>Header Files\InputData</Filter>
     </ClInclude>
-    <ClInclude Include="AdvectionDiffusionSolver2D.h">
-      <Filter>Header Files\Solver2D</Filter>
-    </ClInclude>
     <ClInclude Include="AdvectionDiffusionSolver1D.h">
       <Filter>Header Files\Solver1D\AdvectionDiffusion</Filter>
     </ClInclude>
     <ClInclude Include="WaveEquationSolver1D.h">
       <Filter>Header Files\Solver1D\WaveEquation</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvectionDiffusionSolver2D.h">
+      <Filter>Header Files\Solver2D\AdvectionDiffusion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +90,9 @@
     </None>
     <None Include="WaveEquationSolver1D.tpp">
       <Filter>Header Files\Solver1D\WaveEquation</Filter>
+    </None>
+    <None Include="AdvectionDiffusionSolver2D.tpp">
+      <Filter>Header Files\Solver2D\AdvectionDiffusion</Filter>
     </None>
   </ItemGroup>
 </Project>

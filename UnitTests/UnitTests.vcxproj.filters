@@ -26,10 +26,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AdvectionDiffusionTests.cpp">
+    <ClCompile Include="AdvectionDiffusion1DTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WaveEquationTests.cpp">
+    <ClCompile Include="WaveEquation1DTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdvectionDiffusion2DTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,12 +9,12 @@
 
 namespace pdet
 {
-	class WaveEquationTests : public ::testing::Test
+	class WaveEquation1DTests : public ::testing::Test
 	{
 
 	};
 
-	TEST_F(WaveEquationTests, ConstantSolutionNoTransport)
+	TEST_F(WaveEquation1DTests, ConstantSolutionNoTransport)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -27,7 +27,7 @@ namespace pdet
 			if (solverType != SolverType::ExplicitEuler && solverType != SolverType::ImplicitEuler)
 				continue;
 
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::wave1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -42,7 +42,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(WaveEquationTests, ConstantSolution)
+	TEST_F(WaveEquation1DTests, ConstantSolution)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -55,7 +55,7 @@ namespace pdet
 			if (solverType != SolverType::ExplicitEuler && solverType != SolverType::ImplicitEuler)
 				continue;
 
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::wave1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -70,7 +70,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(WaveEquationTests, LinearSolution)
+	TEST_F(WaveEquation1DTests, LinearSolution)
 	{
 		cl::dvec grid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0, 1.0, 10);
 		auto _grid = grid.Get();
@@ -105,7 +105,7 @@ namespace pdet
 			if (solverType != SolverType::ExplicitEuler && solverType != SolverType::ImplicitEuler)
 				continue;
 
-			pde::GpuDoublePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+			pde::GpuDoublePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
 			pde::dwave1D solver(data);
 
 			solver.Advance(steps);

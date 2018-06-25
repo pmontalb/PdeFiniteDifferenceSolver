@@ -12,6 +12,21 @@ namespace pde
 	class PdeInputData1D : public PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>
 	{
 	public:
+		/**
+		* Space discretization mesh
+		*/
+		cl::Vector<memorySpace, mathDomain> spaceGrid;
+
+		/**
+		* Advection coefficient
+		*/
+		cl::Vector<memorySpace, mathDomain> velocity;
+
+		/**
+		* Diffusion coefficient
+		*/
+		cl::Vector<memorySpace, mathDomain> diffusion;
+
 		const BoundaryCondition1D boundaryConditions = BoundaryCondition1D();
 
 		PdeInputData1D(const cl::Vector<memorySpace, mathDomain>& initialCondition,
@@ -20,13 +35,15 @@ namespace pde
 					   const cl::Vector<memorySpace, mathDomain>& diffusion,
 					   const double dt,
 					   const SolverType solverType,
+					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
-			: initialCondition(initialCondition),
-			spaceGrid(spaceGrid),
+			: PdeInputData(initialCondition,
+						   dt,
+						   solverType,
+						   spaceDiscretizerType),
 			velocity(velocity),
+			spaceGrid(spaceGrid),
 			diffusion(diffusion),
-			dt(dt),
-			solverType(solverType),
 			boundaryConditions(boundaryConditions)
 		{
 		}
@@ -40,12 +57,13 @@ namespace pde
 					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
 			:
-			PdeInputData(initialCondition, spaceGrid,
-						 cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, velocity),
-						 cl::Tensor<memorySpace, mathDomain>(initialCondition.size(), 1, 1, diffusion),
+			PdeInputData(initialCondition,
 						 dt,
 						 solverType,
 						 spaceDiscretizerType),
+			velocity(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), velocity)),
+			spaceGrid(spaceGrid),
+			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), diffusion)),
 			boundaryConditions(boundaryConditions)
 		{
 		}
@@ -53,13 +71,13 @@ namespace pde
 
 #pragma region Type aliases
 
-	typedef PdeInputData1D<MemorySpace::Device, MathDomain::Float> GpuSinglePdeInputData;
-	typedef GpuSinglePdeInputData GpuFloatPdeInputData;
-	typedef PdeInputData1D<MemorySpace::Device, MathDomain::Double> GpuDoublePdeInputData;
+	typedef PdeInputData1D<MemorySpace::Device, MathDomain::Float> GpuSinglePdeInputData1D;
+	typedef GpuSinglePdeInputData1D GpuFloatPdeInputData1D;
+	typedef PdeInputData1D<MemorySpace::Device, MathDomain::Double> GpuDoublePdeInputData1D;
 
-	typedef PdeInputData1D<MemorySpace::Host, MathDomain::Float> CpuSinglePdeInputData;
-	typedef CpuSinglePdeInputData CpuFloatPdeInputData;
-	typedef PdeInputData1D<MemorySpace::Host, MathDomain::Double> CpuDoublePdeInputData;
+	typedef PdeInputData1D<MemorySpace::Host, MathDomain::Float> CpuSinglePdeInputData1D;
+	typedef CpuSinglePdeInputData1D CpuFloatPdeInputData1D;
+	typedef PdeInputData1D<MemorySpace::Host, MathDomain::Double> CpuDoublePdeInputData1D;
 
 #pragma endregion
 }

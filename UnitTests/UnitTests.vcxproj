@@ -175,9 +175,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AdvectionDiffusionTests.cpp" />
+    <ClCompile Include="AdvectionDiffusion1DTests.cpp" />
+    <ClCompile Include="AdvectionDiffusion2DTests.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="WaveEquationTests.cpp" />
+    <ClCompile Include="WaveEquation1DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

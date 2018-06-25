@@ -70,7 +70,7 @@ namespace pde
 		cl::Vector<ms, md> velocity(inputData.velocity.size(), static_cast<cl::Vector<ms, md>::stdType>(0.0));
 
 		// since u_xx is multiplied by velocity^2, the 'diffusion' component is velocity^2
-		cl::Vector<ms, md> diffusion(*(inputData.velocity.matrices[0]->columns[0]));
+		cl::Vector<ms, md> diffusion(inputData.velocity);
 		diffusion %= diffusion;
 
 		FiniteDifferenceInput1D _input(inputData.dt,

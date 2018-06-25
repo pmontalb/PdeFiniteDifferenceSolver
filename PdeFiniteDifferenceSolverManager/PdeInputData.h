@@ -17,21 +17,6 @@ namespace pde
 		cl::Tensor<memorySpace, mathDomain> initialCondition;
 
 		/**
-		* Space discretization mesh
-		*/
-		cl::Tensor<memorySpace, mathDomain> spaceGrid;
-
-		/**
-		* Advection coefficient
-		*/
-		cl::Tensor<memorySpace, mathDomain> velocity;
-
-		/**
-		* Diffusion coefficient
-		*/
-		cl::Tensor<memorySpace, mathDomain> diffusion;
-
-		/**
 		* Time discretization mesh size
 		*/
 		const double dt;
@@ -47,16 +32,10 @@ namespace pde
 		const SpaceDiscretizerType spaceDiscretizerType;
 
 		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition,
-						const cl::Tensor<memorySpace, mathDomain>& spaceGrid,
-						const cl::Tensor<memorySpace, mathDomain>& velocity,
-						const cl::Tensor<memorySpace, mathDomain>& diffusion,
-						const double dt,
-						const SolverType solverType,
-					    const SpaceDiscretizerType spaceDiscretizerType)
+					 const double dt,
+					 const SolverType solverType,
+					 const SpaceDiscretizerType spaceDiscretizerType)
 			: initialCondition(initialCondition),
-			spaceGrid(spaceGrid),
-			velocity(velocity),
-			diffusion(diffusion),
 			dt(dt),
 			solverType(solverType),
 			spaceDiscretizerType(spaceDiscretizerType)
@@ -64,15 +43,9 @@ namespace pde
 		}
 
 		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition,
-						const cl::Tensor<memorySpace, mathDomain>& spaceGrid,
-						const typename cl::Traits<mathDomain>::stdType velocity,
-						const typename cl::Traits<mathDomain>::stdType diffusion,
-						const double dt,
-						const SolverType solverType)
+					 const double dt,
+					 const SolverType solverType)
 			: initialCondition(initialCondition),
-			spaceGrid(spaceGrid),
-			velocity(initialCondition.nRows(), initialCondition.nCols(), initialCondition.nCubes(), velocity),
-			diffusion(initialCondition.nRows(), initialCondition.nCols(), initialCondition.nCubes(), diffusion),
 			dt(dt),
 			solverType(solverType)
 		{

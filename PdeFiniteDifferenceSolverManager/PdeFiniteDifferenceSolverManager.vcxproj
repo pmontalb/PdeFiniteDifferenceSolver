@@ -35,6 +35,7 @@
     <ClCompile Include="FiniteDifferenceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AdvectionDiffusionSolver2D.tpp" />
     <None Include="AdvectionDiffusionSolver1D.tpp" />
     <None Include="FiniteDifferenceSolver.tpp" />
     <None Include="FiniteDifferenceSolver1D.tpp" />

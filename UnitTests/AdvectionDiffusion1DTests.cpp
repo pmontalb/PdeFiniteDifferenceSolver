@@ -9,12 +9,12 @@
 
 namespace pdet
 {
-	class AdvectionDiffusionTests : public ::testing::Test
+	class AdvectionDiffusion1DTests : public ::testing::Test
 	{
 
 	};
 
-	TEST_F(AdvectionDiffusionTests, ConstantSolutionNoTransportNoDiffusion)
+	TEST_F(AdvectionDiffusion1DTests, ConstantSolutionNoTransportNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -24,7 +24,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -39,7 +39,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(AdvectionDiffusionTests, ConstantSolutionNoDiffusion)
+	TEST_F(AdvectionDiffusion1DTests, ConstantSolutionNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -49,7 +49,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -69,7 +69,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(AdvectionDiffusionTests, ConstantSolution)
+	TEST_F(AdvectionDiffusion1DTests, ConstantSolution)
 	{
 		cl::vec initialCondition(10, 1.0f);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -79,7 +79,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -99,7 +99,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(AdvectionDiffusionTests, LinearSolutionNoTransport)
+	TEST_F(AdvectionDiffusion1DTests, LinearSolutionNoTransport)
 	{
 		cl::vec initialCondition = cl::LinSpace(0.0f, 10.0f, 10);
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
@@ -114,7 +114,7 @@ namespace pdet
 			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -10.0);
 			BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
 
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
 			pde::ad1D solver(data);
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
@@ -134,7 +134,7 @@ namespace pdet
 		}
 	}
 
-	TEST_F(AdvectionDiffusionTests, SineSolutionNoDiffusion)
+	TEST_F(AdvectionDiffusion1DTests, SineSolutionNoDiffusion)
 	{
 		cl::vec grid = cl::LinSpace(0.0f, 1.0f, 10);
 		auto _grid = grid.Get();
@@ -157,7 +157,7 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-			pde::GpuSinglePdeInputData data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
+			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(data);
 
 			solver.Advance(steps);
