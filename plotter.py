@@ -122,7 +122,7 @@ def animate_multicurve(z_vector, x_vector, grid=False, show=False, save=False, l
         plt.show()
 
 
-def animate_3D(z, x, y, rstride=1, cstride=1, cmap=cm.coolwarm, show=False, save=False, name=""):
+def animate_3D(z, x, y, rstride=1, cstride=1, cmap=cm.coolwarm, show=False, save=False, name="", fixed_view=False):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
@@ -130,12 +130,15 @@ def animate_3D(z, x, y, rstride=1, cstride=1, cmap=cm.coolwarm, show=False, save
     x_grid, y_grid = np.meshgrid(x, y)
 
     line = ax.plot_surface(x_grid, y_grid, z[0], cmap=cmap, rstride=rstride, cstride=cstride, antialiased=True)
+    z_lim = ax.get_zlim()
 
     def update_line(i):
         if i >= z.shape[0]:
             return line,
         ax.clear()
         l = ax.plot_surface(x_grid, y_grid, z[i], cmap=cm.coolwarm, rstride=rstride, cstride=cstride, antialiased=True)
+        if fixed_view:
+            ax.set_zlim(z_lim)
         return l,
 
     ani = animation.FuncAnimation(fig, update_line, np.arange(1, 200), interval=25, blit=False)

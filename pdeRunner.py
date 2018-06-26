@@ -176,8 +176,8 @@ def run_transport_2D(space_discretizer="LaxWendroff",
     except FileNotFoundError:
         pass
 
-    x_grid = np.linspace(-np.pi, np.pi, 128)
-    y_grid = np.linspace(-np.pi, np.pi, 128)
+    x_grid = np.linspace(-np.pi, np.pi, 64)
+    y_grid = np.linspace(-np.pi, np.pi, 64)
     X, Y = np.meshgrid(x_grid, y_grid)
     ic = np.exp(-X ** 2 - Y ** 2)
     if run:
@@ -192,28 +192,76 @@ def run_transport_2D(space_discretizer="LaxWendroff",
                   ["-gx", X_GRID_FILE] +
                   ["-gy", Y_GRID_FILE] +
                   ["-of", output_file] +
-                  ["-md", "Double"] +
+                  ["-md", "Float"] +
                   ["-lbct", "Periodic"] +
                   ["-lbc", "0.0"] +
                   ["-rbct", "Periodic"] +
                   ["-st", "ExplicitEuler"] +
                   ["-sdt", space_discretizer] +
                   ["-d", "0"] +
-                  ["-vx", ".5"] +
-                  ["-vy", ".25"] +
-                  ["-dt", "0.0005"] +
-                  ["-n", "25"] +
-                  ["-N", "500"])
+                  ["-vx", "0.05"] +
+                  ["-vy", ".05"] +
+                  ["-dt", "0.001"] +
+                  ["-n", "5000"] +
+                  ["-N", "50"])
         p.communicate()
 
     _solution = np.loadtxt(output_file)
     solution = np.array([_solution[:, i].reshape((len(x_grid), len(y_grid))) for i in range(_solution.shape[1])])
     if run_animation:
-        animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=8, cstride=8)
+        animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=1, cstride=1)
 
     return x_grid, y_grid, solution
 
 
+def run_diffusion_2D(solver_type="CrankNicolson", output_file="diffusion2d.cl",
+                     name="diffusion2d.gif",
+                     run=True, show=True, save=False,
+                     run_animation=True):
+
+    try:
+        os.remove(X_GRID_FILE)
+        os.remove(Y_GRID_FILE)
+        os.remove(INITIAL_CONDITION_FILE)
+    except FileNotFoundError:
+        pass
+
+    x_grid = np.linspace(-np.pi, np.pi, 64)
+    y_grid = np.linspace(-np.pi, np.pi, 64)
+    X, Y = np.meshgrid(x_grid, y_grid)
+    ic = np.exp(-X ** 2 - Y ** 2)
+    if run:
+        np.savetxt(X_GRID_FILE, x_grid)
+        np.savetxt(Y_GRID_FILE, x_grid)
+        np.savetxt(INITIAL_CONDITION_FILE, ic)
+
+        p = Popen([releaseDll] +
+                  ["-dbg"] +
+                  ["-dim", "2"] +
+                  ["-ic", INITIAL_CONDITION_FILE] +
+                  ["-gx", X_GRID_FILE] +
+                  ["-gy", Y_GRID_FILE] +
+                  ["-of", output_file] +
+                  ["-md", "Float"] +
+                  ["-lbct", "Neumann"] +
+                  ["-lbc", "0.0"] +
+                  ["-rbct", "Neumann"] +
+                  ["-st", solver_type] +
+                  ["-sdt", "Centered"] +
+                  ["-d", "0.2"] +
+                  ["-vx", "0.00"] +
+                  ["-vy", ".0"] +
+                  ["-dt", "0.001"] +
+                  ["-n", "500"] +
+                  ["-N", "50"])
+        p.communicate()
+
+    _solution = np.loadtxt(output_file)
+    solution = np.array([_solution[:, i].reshape((len(x_grid), len(y_grid))) for i in range(_solution.shape[1])])
+    if run_animation:
+        animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=1, cstride=1, fixed_view=True)
+
+    return x_grid, y_grid, solution
 
 if __name__ == "__main__":
 
@@ -228,4 +276,6 @@ if __name__ == "__main__":
     #                         run=True, show=True, show_grid=True,
     #                         save=True, name="waveInstability1D.gif")
 
-    run_transport_2D(run=False)
+    #run_transport_2D(run=True, save=False, show=True)
+
+    run_diffusion_2D(run=False, save=True, show=False)
