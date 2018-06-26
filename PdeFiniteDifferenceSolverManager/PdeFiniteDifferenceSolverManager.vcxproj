@@ -30,6 +30,7 @@
     <ClInclude Include="PdeInputData1D.h" />
     <ClInclude Include="PdeInputData2D.h" />
     <ClInclude Include="WaveEquationSolver1D.h" />
+    <ClInclude Include="WaveEquationSolver2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp" />
@@ -41,6 +42,7 @@
     <None Include="FiniteDifferenceSolver1D.tpp" />
     <None Include="FiniteDifferenceSolver2D.tpp" />
     <None Include="WaveEquationSolver1D.tpp" />
+    <None Include="WaveEquationSolver2D.tpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

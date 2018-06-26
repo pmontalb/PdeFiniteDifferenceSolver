@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Solver2D\AdvectionDiffusion">
       <UniqueIdentifier>{c6b0e9e2-15f9-4d17-8ac0-c4e22d0500a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Solver2D\WaveEquation">
+      <UniqueIdentifier>{612fcbfe-d806-4ab6-bad7-abe209e3bb3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FiniteDifferenceManager.cpp">
@@ -74,6 +77,9 @@
     <ClInclude Include="AdvectionDiffusionSolver2D.h">
       <Filter>Header Files\Solver2D\AdvectionDiffusion</Filter>
     </ClInclude>
+    <ClInclude Include="WaveEquationSolver2D.h">
+      <Filter>Header Files\Solver2D\WaveEquation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FiniteDifferenceSolver.tpp">
@@ -93,6 +99,9 @@
     </None>
     <None Include="AdvectionDiffusionSolver2D.tpp">
       <Filter>Header Files\Solver2D\AdvectionDiffusion</Filter>
+    </None>
+    <None Include="WaveEquationSolver2D.tpp">
+      <Filter>Header Files\Solver2D\WaveEquation</Filter>
     </None>
   </ItemGroup>
 </Project>

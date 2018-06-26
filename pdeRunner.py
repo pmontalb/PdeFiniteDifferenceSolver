@@ -95,7 +95,7 @@ def run_diffusion_1D(solver_type="CrankNicolson", output_file="diffusion.cl", na
     return grid, solution
 
 
-def run_wave_1D(solver_type="CrankNicolson",
+def run_wave_1D(solver_type="ExplicitEuler",
                 output_file="wave.cl", name="wave.gif", run=True, show=True, show_grid=False, save=False,
                 run_animation=True):
 
@@ -263,6 +263,58 @@ def run_diffusion_2D(solver_type="CrankNicolson", output_file="diffusion2d.cl",
 
     return x_grid, y_grid, solution
 
+
+def run_wave_2D(solver_type="ExplicitEuler", output_file="wave2d.cl",
+                     name="wave2d.gif",
+                     run=True, show=True, save=False,
+                     run_animation=True):
+
+    try:
+        os.remove(X_GRID_FILE)
+        os.remove(Y_GRID_FILE)
+        os.remove(INITIAL_CONDITION_FILE)
+    except FileNotFoundError:
+        pass
+
+    x_grid = np.linspace(-np.pi, np.pi, 64)
+    y_grid = np.linspace(-np.pi, np.pi, 64)
+    X, Y = np.meshgrid(x_grid, y_grid)
+    ic = np.exp(-X ** 2 - Y ** 2)
+
+    np.savetxt(X_GRID_FILE, x_grid)
+    np.savetxt(Y_GRID_FILE, x_grid)
+    np.savetxt(INITIAL_CONDITION_FILE, ic)
+
+    if run:
+        p = Popen([debugDll] +
+                  ["-dbg"] +
+                  ["-pde", "WaveEquation"] +
+                  ["-dim", "2"] +
+                  ["-ic", INITIAL_CONDITION_FILE] +
+                  ["-gx", X_GRID_FILE] +
+                  ["-gy", Y_GRID_FILE] +
+                  ["-of", output_file] +
+                  ["-md", "Float"] +
+                  ["-lbct", "Neumann"] +
+                  ["-lbc", "0.0"] +
+                  ["-rbct", "Neumann"] +
+                  ["-st", solver_type] +
+                  ["-sdt", "Centered"] +
+                  ["-d", "0.0"] +
+                  ["-vx", "0.01"] +
+                  ["-vy", ".0"] +
+                  ["-dt", "0.001"] +
+                  ["-n", "250"] +
+                  ["-N", "250"])
+        p.communicate()
+
+    _solution = np.loadtxt(output_file)
+    solution = np.array([_solution[:, i].reshape((len(x_grid), len(y_grid))) for i in range(_solution.shape[1])])
+    if run_animation:
+        animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=1, cstride=1, fixed_view=True)
+
+    return x_grid, y_grid, solution
+
 if __name__ == "__main__":
 
     # compare_solvers_transport_1D(["LaxWendroff", "Upwind"], run=True, show=True, show_grid=True,
@@ -278,4 +330,4 @@ if __name__ == "__main__":
 
     #run_transport_2D(run=True, save=False, show=True)
 
-    run_diffusion_2D(run=False, save=True, show=False)
+    run_wave_2D(run=False, save=True, show=False)

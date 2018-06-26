@@ -179,6 +179,7 @@
     <ClCompile Include="AdvectionDiffusion2DTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="WaveEquation1DTests.cpp" />
+    <ClCompile Include="WaveEquation2DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
