@@ -52,6 +52,60 @@ For convenience's sake the following typedefs have been defined:
 ```
 
 ## Sample usage - 1D
+### Advection-Diffusion
+```c++
+	cl::vec grid = cl::LinSpace(0.0f, 1.0f, 128);
+	auto _grid = grid.Get();
+
+	std::vector<float> _initialCondition(grid.size());
+	for (unsigned i = 0; i < _initialCondition.size(); ++i)
+		_initialCondition[i] = sin(_grid[i]);
+
+	cl::vec initialCondition(_initialCondition);
+
+	unsigned steps = 100;
+	double dt = 1e-4;
+	float velocity = .05f;
+	float diffusion = 0.1f;
+	
+	BoundaryCondition leftBoundaryCondition(BoundaryConditionType::Neumann, 0.0);
+	BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, 0.0);
+	BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
+
+	pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+	pde::ad1D solver(data);
+
+	solver.Advance(steps);
+	const auto solution = solver.solution->columns[0]->Get();
+```
+
+### Wave Equation
+```c++
+	cl::dvec grid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0, 1.0, 128);
+	auto _grid = grid.Get();
+
+	std::vector<double> _initialCondition(grid.size());
+	for (unsigned i = 0; i < _initialCondition.size(); ++i)
+		_initialCondition[i] = sin(_grid[i]);
+
+	cl::dvec initialCondition(_initialCondition);
+
+	unsigned steps = 100;
+	double dt = 1e-4;
+	double velocity = .05;
+	
+	BoundaryCondition leftBoundaryCondition(BoundaryConditionType::Neumann, 0.0);
+	BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, 0.0);
+	BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
+
+	pde::GpuDoublePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+	pde::dwave1D solver(data);
+
+	solver.Advance(steps);
+	const auto solution = solver.solution->columns[0]->Get();
+```
+
+## Sample results - 1D
 I wrote a simple python script for plotting the results:
 
 ### Hyperbolic - first order: transport equation
@@ -65,3 +119,33 @@ I wrote a simple python script for plotting the results:
 ### Hyperbolic - second order: wave equation
 - Numerical instability of Implicit/Explicit Euler scheme <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/waveInstability1D_compressed.gif"> </p>
 
+## Sample usage - 2D
+### Advection-Diffusion
+```c++
+	cl::dvec xGrid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0f, 1.0f, 32u);
+	cl::dvec yGrid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0f, 1.0f, 32u);
+	double dt = 1e-5;
+	double xVelocity = .02;
+	double yVelocity = .05;
+	double diffusion = 1.0;
+
+	auto _xGrid = xGrid.Get();
+	auto _yGrid = yGrid.Get();
+	std::vector<double> _initialCondition(xGrid.size() * yGrid.size());
+	for (unsigned j = 0; j < _yGrid.size(); ++j)
+	    for (unsigned i = 0; i < _xGrid.size(); ++i)
+		_initialCondition[i + _xGrid.size() * j] = exp(-_xGrid[i] * _xGrid[i] - _yGrid[i] * _yGrid[i]);
+
+	cl::dmat initialCondition(_initialCondition, xGrid.size(), yGrid.size());
+
+	pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, yVelocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+	pde::dad2D solver(data);
+	const auto solution = solver.solution->columns[0]->Get();
+```
+
+## Sample results - 2D
+### Hyperbolic - first order: transport equation
+- Lax-Wendroff <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/transport2d_compressed.gif"> </p>
+
+### Parabolic: heat equation, advection-diffusion equation
+- Crank-Nicolson <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/diffusion2d_compressed.gif"> </p>
