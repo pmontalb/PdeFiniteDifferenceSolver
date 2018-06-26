@@ -143,9 +143,33 @@ I wrote a simple python script for plotting the results:
 	const auto solution = solver.solution->columns[0]->Get();
 ```
 
+### Wave Equation
+```c++
+	cl::dvec xGrid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0f, 1.0f, 32u);
+	cl::dvec yGrid = cl::LinSpace<MemorySpace::Device, MathDomain::Double>(0.0f, 1.0f, 32u);
+	double dt = 1e-5;
+	double xVelocity = .02;
+
+	auto _xGrid = xGrid.Get();
+	auto _yGrid = yGrid.Get();
+	std::vector<double> _initialCondition(xGrid.size() * yGrid.size());
+	for (unsigned j = 0; j < _yGrid.size(); ++j)
+	    for (unsigned i = 0; i < _xGrid.size(); ++i)
+		_initialCondition[i + _xGrid.size() * j] = exp(-_xGrid[i] * _xGrid[i] - _yGrid[i] * _yGrid[i]);
+
+	cl::dmat initialCondition(_initialCondition, xGrid.size(), yGrid.size());
+
+	pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, 0.0, 0.0, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
+	pde::dwave2D solver(data);
+	const auto solution = solver.solution->columns[0]->Get();
+```
+
 ## Sample results - 2D
 ### Hyperbolic - first order: transport equation
 - Lax-Wendroff <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/transport2d_compressed.gif"> </p>
 
 ### Parabolic: heat equation, advection-diffusion equation
 - Crank-Nicolson <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/diffusion2d_compressed.gif"> </p>
+
+### Hyperbolic - second order: wave equation
+- Crank-Nicolson <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/wave2d_compressed.gif"> </p>
