@@ -8,7 +8,7 @@ namespace pde
 	void FiniteDifferenceSolver2D<solverImpl, ms, md>::AdvanceImpl(cl::ColumnWiseMatrix<ms, md>& solution,
 																   const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers,
 																   const SolverType solverType,
-																   const unsigned nSteps = 1)
+																   const unsigned nSteps)
 	{
 		FiniteDifferenceInput2D _input(inputData.dt,
 									   inputData.xSpaceGrid.GetBuffer(),

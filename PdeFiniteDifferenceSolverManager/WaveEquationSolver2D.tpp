@@ -8,7 +8,7 @@ namespace pde
 	void WaveEquationSolver2D<ms, md>::AdvanceImpl(cl::ColumnWiseMatrix<ms, md>& solution,
 												   const std::shared_ptr<cl::Tensor<ms, md>>& timeDiscretizers,
 												   const SolverType solverType,
-												   const unsigned nSteps = 1)
+												   const unsigned nSteps)
 	{
 		// NB: I am not writing support for multi-step algorithm here, so I will write the Iterate code here in place
 
@@ -70,7 +70,7 @@ namespace pde
 		timeDiscretizers->Set(0.0);
 
 		// since u_xx is multiplied by velocity^2, there's no actual component for u_x
-		cl::Vector<ms, md> velocity(inputData.xVelocity.size(), static_cast<cl::Vector<ms, md>::stdType>(0.0));
+		cl::Vector<ms, md> velocity(inputData.xVelocity.size(), static_cast<typename cl::Vector<ms, md>::stdType>(0.0));
 
 		// since u_xx is multiplied by velocity^2, the 'diffusion' component is velocity^2
 		// not really ideal, but I'm reading it from xVelocity, pretty much arbitrarily
@@ -100,6 +100,6 @@ namespace pde
 
 		// TODO: read from input instead of setting it to 0
 		const unsigned dimension = this->inputData.initialCondition.nRows() * this->inputData.initialCondition.nCols();
-		solutionDerivative = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, solverSteps, static_cast<cl::ColumnWiseMatrix<ms, md>::stdType>(0.0));
+		solutionDerivative = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, solverSteps, static_cast<typename cl::ColumnWiseMatrix<ms, md>::stdType>(0.0));
 	}
 }

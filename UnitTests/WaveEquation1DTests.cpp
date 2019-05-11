@@ -112,7 +112,7 @@ namespace pdet
 			const auto solution = solver.solution->columns[0]->Get();
 
 			for (size_t i = 0; i < solution.size(); ++i)
-				ASSERT_TRUE(fabs(solution[i] - _exactSolution[i]) <= 1e-8);
+				ASSERT_TRUE(fabs(solution[i] - _exactSolution[i]) <= 5e-6) << "err=" << fabs(solution[i] - _exactSolution[i]);
 
 		}
 	}

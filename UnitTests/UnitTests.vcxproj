@@ -108,7 +108,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);;;GTEST_HAS_STD_TUPLE </PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -120,7 +120,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalDependencies>Npy++.lib;CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
       <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
@@ -150,7 +150,7 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -166,7 +166,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalDependencies>Npy++.lib;CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
       <FullProgramDatabaseFile>false</FullProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>

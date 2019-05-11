@@ -24,7 +24,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>PdeFiniteDifferenceSolver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
-    <ProjectName>PdeFiniteDifferenceSolver</ProjectName>
+    <ProjectName>PdeFiniteDifferenceSolverNoPlot</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -73,6 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)\..\forge\build\include;$(SolutionDir)\..\forge\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,6 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -89,15 +91,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;FGDLL;OS_WIN;WIN32_MEAN_AND_LEAN;USE_GLFW;USE_FREEIMAGE;GLFW_DLL;CMAKE_INTDIR="Debug";forge_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceKernels;$(SolutionDir)\..\forge\build\include;$(SolutionDir)\..\forge\include;$(SolutionDir)\..\forge;</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalUsingDirectories>$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Npy++.lib;CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -145,13 +148,14 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalUsingDirectories>$(SolutionDir)\..\Npy++\Npy++;$(SolutionDir)\..\Npy++\MemoryMapping;$(SolutionDir)\..\Npy++\zlib-1.2.7.f-win64-v1\</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Npy++.lib;CudaLight.lib;CudaLightKernels.lib;PdeFiniteDifferenceSolverManager.lib;PdeFiniteDifferenceKernels.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -167,6 +171,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\forge\build\src\backend\opengl\forge.vcxproj">
+      <Project>{8f7f5dd3-9dd7-3108-bc1f-477092b67281}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

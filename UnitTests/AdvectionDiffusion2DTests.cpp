@@ -151,7 +151,7 @@ namespace pdet
 				{
 					for (unsigned i = 1; i < _xGrid.size() - 1; ++i)
 					{
-						const unsigned idx = i + _xGrid.size() * j;
+						const unsigned idx = i + static_cast<unsigned>(_xGrid.size()) * j;
 						ASSERT_LE(fabs(solution[idx] - _initialCondition[idx]), 5e-12);
 					}
 				}
