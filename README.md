@@ -172,4 +172,4 @@ I wrote a simple python script for plotting the results:
 - Crank-Nicolson <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/diffusion2d_compressed.gif"> </p>
 
 ### Hyperbolic - second order: wave equation
-- Crank-Nicolson <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/wave2d_compressed.gif"> </p>
+- Explicit Euler <p align="center"> <img src="https://raw.githubusercontent.com/pmontalb/PdeFiniteDifferenceSolver/master/wave2d_compressed.gif"> </p>
