@@ -130,7 +130,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\..\PdeFiniteDifferenceKernels;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\PdeFiniteDifferenceSolverManager;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\CudaLightKernels;$(SolutionDir)\..\PdeFiniteDifferenceKernels;$(SolutionDir)\..\CudaLight\CudaLight;$(SolutionDir)\PdeFiniteDifferenceSolverManager;$(SolutionDir)\..\PdeFiniteDifferenceSolver\PdeFiniteDifferenceSolverManager;</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BufferSecurityCheck>true</BufferSecurityCheck>
     </ClCompile>
