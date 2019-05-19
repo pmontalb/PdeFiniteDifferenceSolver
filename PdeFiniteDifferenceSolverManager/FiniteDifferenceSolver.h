@@ -32,7 +32,7 @@ namespace pde
 
 		void Advance(const unsigned nSteps = 1);
 
-		const cl::Tensor<memorySpace, mathDomain>* const GetTimeDiscretizer() const noexcept;
+		const cl::Tensor<memorySpace, mathDomain>* GetTimeDiscretizer() const noexcept;
 
 		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solution;
 		const pdeInputType& inputData;

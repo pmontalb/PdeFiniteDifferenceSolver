@@ -19,7 +19,7 @@ namespace pde
 	}
 
 	template<class pdeImpl, class pdeInputType, MemorySpace ms, MathDomain md>
-	const cl::Tensor<ms, md>* const FiniteDifferenceSolver<pdeImpl, pdeInputType, ms, md>::GetTimeDiscretizer() const noexcept
+	const cl::Tensor<ms, md>* FiniteDifferenceSolver<pdeImpl, pdeInputType, ms, md>::GetTimeDiscretizer() const noexcept
 	{
 		return timeDiscretizers ? timeDiscretizers.get() : nullptr;
 	}

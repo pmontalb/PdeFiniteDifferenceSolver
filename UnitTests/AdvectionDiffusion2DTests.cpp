@@ -36,13 +36,7 @@ namespace pdet
 				const auto solution = solver.solution->columns[0]->Get();
 
 				for (size_t i = 0; i < solution.size(); ++i)
-				{
-					if (fabs(solution[i] - _initialCondition[i]) > 1e-5)
-					{
-						int a = 0;
-					}
 					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 1e-12);
-				}
 			}
 		}
 	}

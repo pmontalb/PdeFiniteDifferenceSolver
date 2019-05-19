@@ -27,7 +27,7 @@ namespace pde
 	{
 	public:
 		friend class FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
-		using FiniteDifferenceSolver::FiniteDifferenceSolver;
+		using FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver;
 
 		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver1D);
 

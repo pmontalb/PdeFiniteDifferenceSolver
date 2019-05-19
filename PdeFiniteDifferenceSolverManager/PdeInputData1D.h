@@ -12,20 +12,20 @@ namespace pde
 	class PdeInputData1D : public PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>
 	{
 	public:
+        /**
+        * Advection coefficient
+        */
+        cl::Vector<memorySpace, mathDomain> velocity;
+
+        /**
+        * Diffusion coefficient
+        */
+        cl::Vector<memorySpace, mathDomain> diffusion;
+
 		/**
 		* Space discretization mesh
 		*/
 		cl::Vector<memorySpace, mathDomain> spaceGrid;
-
-		/**
-		* Advection coefficient
-		*/
-		cl::Vector<memorySpace, mathDomain> velocity;
-
-		/**
-		* Diffusion coefficient
-		*/
-		cl::Vector<memorySpace, mathDomain> diffusion;
 
 		const BoundaryCondition1D boundaryConditions = BoundaryCondition1D();
 
@@ -37,13 +37,13 @@ namespace pde
 					   const SolverType solverType,
 					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
-			: PdeInputData(initialCondition,
+			: PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
 						   dt,
 						   solverType,
 						   spaceDiscretizerType),
 			velocity(velocity),
-			spaceGrid(spaceGrid),
 			diffusion(diffusion),
+			spaceGrid(spaceGrid),
 			boundaryConditions(boundaryConditions)
 		{
 		}
@@ -57,13 +57,13 @@ namespace pde
 					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
 			:
-			PdeInputData(initialCondition,
+                PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
 						 dt,
 						 solverType,
 						 spaceDiscretizerType),
 			velocity(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), velocity)),
-			spaceGrid(spaceGrid),
 			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), diffusion)),
+                spaceGrid(spaceGrid),
 			boundaryConditions(boundaryConditions)
 		{
 		}

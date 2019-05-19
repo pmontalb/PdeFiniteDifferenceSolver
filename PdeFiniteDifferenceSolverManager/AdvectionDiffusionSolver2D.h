@@ -20,7 +20,7 @@ namespace pde
 		// befriend the mother CRTP class
 		friend class FiniteDifferenceSolver2D<AdvectionDiffusionSolver2D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 
-		using FiniteDifferenceSolver2D::FiniteDifferenceSolver2D;
+		using FiniteDifferenceSolver2D<AdvectionDiffusionSolver2D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver2D;
 
 		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver2D);
 

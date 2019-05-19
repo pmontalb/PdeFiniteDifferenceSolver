@@ -52,9 +52,9 @@ namespace pde
 		}
 
 		virtual ~PdeInputData() noexcept = default;
-		PdeInputData(const PdeInputData& rhs) noexcept = default;
-		PdeInputData(PdeInputData&& rhs) noexcept = default;
-		PdeInputData& operator=(const PdeInputData& rhs) noexcept = default;
-		PdeInputData& operator=(PdeInputData&& rhs) noexcept = default;
+		PdeInputData(const PdeInputData& rhs) = default;
+		PdeInputData(PdeInputData&& rhs) = default;
+		PdeInputData& operator=(const PdeInputData& rhs) = default;
+		PdeInputData& operator=(PdeInputData&& rhs) = default;
 	};
 }

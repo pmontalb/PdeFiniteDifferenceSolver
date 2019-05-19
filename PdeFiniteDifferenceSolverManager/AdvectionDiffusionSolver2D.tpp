@@ -9,20 +9,20 @@ namespace pde
 	{
 		// reset everything to 0
 		const unsigned dimension = this->inputData.initialCondition.nRows() * this->inputData.initialCondition.nCols();
-		spaceDiscretizer = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, dimension, 0.0);
-		timeDiscretizers->Set(0.0);
+        this->spaceDiscretizer = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, dimension, 0.0);
+        timeDiscretizers->Set(0.0);
 
-		FiniteDifferenceInput2D _input(inputData.dt,
-									   inputData.xSpaceGrid.GetBuffer(),
-									   inputData.ySpaceGrid.GetBuffer(),
-									   inputData.xVelocity.GetBuffer(),
-									   inputData.yVelocity.GetBuffer(),
-									   inputData.diffusion.GetBuffer(),
+		FiniteDifferenceInput2D _input(this->inputData.dt,
+                                       this->inputData.xSpaceGrid.GetBuffer(),
+                                       this->inputData.ySpaceGrid.GetBuffer(),
+                                       this->inputData.xVelocity.GetBuffer(),
+                                       this->inputData.yVelocity.GetBuffer(),
+                                       this->inputData.diffusion.GetBuffer(),
 									   solverType,
-									   inputData.spaceDiscretizerType,
-									   inputData.boundaryConditions);
-		pde::detail::MakeSpaceDiscretizer2D(spaceDiscretizer->GetTile(), _input);
-		pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), spaceDiscretizer->GetTile(), solverType, inputData.dt);
+                                       this->inputData.spaceDiscretizerType,
+                                       this->inputData.boundaryConditions);
+		pde::detail::MakeSpaceDiscretizer2D(this->spaceDiscretizer->GetTile(), _input);
+		pde::detail::MakeTimeDiscretizerAdvectionDiffusion(timeDiscretizers->GetCube(), this->spaceDiscretizer->GetTile(), solverType, this->inputData.dt);
 	}
 }
 

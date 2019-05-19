@@ -10,15 +10,15 @@ namespace pde
 																   const SolverType solverType,
 																   const unsigned nSteps)
 	{
-		FiniteDifferenceInput2D _input(inputData.dt,
-									   inputData.xSpaceGrid.GetBuffer(),
-									   inputData.ySpaceGrid.GetBuffer(),
-									   inputData.xVelocity.GetBuffer(),
-									   inputData.yVelocity.GetBuffer(),
-									   inputData.diffusion.GetBuffer(),
+		FiniteDifferenceInput2D _input(this->inputData.dt,
+                                       this->inputData.xSpaceGrid.GetBuffer(),
+                                       this->inputData.ySpaceGrid.GetBuffer(),
+                                       this->inputData.xVelocity.GetBuffer(),
+                                       this->inputData.yVelocity.GetBuffer(),
+                                       this->inputData.diffusion.GetBuffer(),
 									   solverType,
-									   inputData.spaceDiscretizerType,
-									   inputData.boundaryConditions);
+                                       this->inputData.spaceDiscretizerType,
+                                       this->inputData.boundaryConditions);
 		pde::detail::Iterate2D(solution.GetTile(), timeDiscretizers->GetCube(), _input, nSteps);
 	}
 
@@ -27,12 +27,12 @@ namespace pde
 	{
 		const unsigned dimension = this->inputData.initialCondition.nRows() * this->inputData.initialCondition.nCols();
 
-		solution = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, solverSteps, 0.0);
+        this->solution = std::make_shared<cl::ColumnWiseMatrix<ms, md>>(dimension, solverSteps, 0.0);
 
 		// has to linearise the initial condition first
-		auto flattenInitialCondition = inputData.initialCondition.matrices[0]->Flatten();
-		solution->Set(flattenInitialCondition, solverSteps - 1);
-		timeDiscretizers = std::make_shared<cl::Tensor<ms, md>>(dimension, dimension, solverSteps);
+		auto flattenInitialCondition = this->inputData.initialCondition.matrices[0]->Flatten();
+        this->solution->Set(flattenInitialCondition, solverSteps - 1);
+        this->timeDiscretizers = std::make_shared<cl::Tensor<ms, md>>(dimension, dimension, solverSteps);
 
 		// need to calculate solution for all the steps > 1
 		for (int step = solverSteps - 2; step >= 0; --step)
@@ -45,19 +45,19 @@ namespace pde
 			static_cast<solverImpl*>(this)->MakeTimeDiscretizer(tmp, multiStepEvolutionScheme);
 
 			// copy the previous step solution
-			solution->Set(*solution->columns[step + 1], step);
+            this->solution->Set(*this->solution->columns[step + 1], step);
 
 			// advance with CrankNicolson scheme
-			const auto& _solution = solution->columns[step];
-			FiniteDifferenceInput2D _input(inputData.dt,
-										   inputData.xSpaceGrid.GetBuffer(),
-										   inputData.ySpaceGrid.GetBuffer(),
-										   inputData.xVelocity.GetBuffer(),
-										   inputData.yVelocity.GetBuffer(),
-										   inputData.diffusion.GetBuffer(),
+			const auto& _solution = this->solution->columns[step];
+			FiniteDifferenceInput2D _input(this->inputData.dt,
+                                           this->inputData.xSpaceGrid.GetBuffer(),
+                                           this->inputData.ySpaceGrid.GetBuffer(),
+                                           this->inputData.xVelocity.GetBuffer(),
+                                           this->inputData.yVelocity.GetBuffer(),
+                                           this->inputData.diffusion.GetBuffer(),
 										   multiStepEvolutionScheme,
-										   inputData.spaceDiscretizerType,
-										   inputData.boundaryConditions);
+                                           this->inputData.spaceDiscretizerType,
+                                           this->inputData.boundaryConditions);
 			MemoryTile tmpBuffer(_solution->GetBuffer().pointer, _solution->size(), 1, ms, md);
 			pde::detail::Iterate2D(tmpBuffer, tmp->GetCube(), _input, 1);
 		}

@@ -36,7 +36,7 @@ public:
 	T GetArgumentValue(const std::string& option) const;
 
 	template<typename T>
-	T GetArgumentValue(const std::string& option, const T& default) const noexcept
+	T GetArgumentValue(const std::string& option, const T& defaultValue) const noexcept
 	{
 		T ret;
 		try
@@ -45,7 +45,7 @@ public:
 		}
 		catch (int)
 		{
-			ret = default;
+			ret = defaultValue;
 		}
 
 		return ret;
@@ -211,7 +211,7 @@ void runner1D(const CommandLineArgumentParser& ap, const bool debug)
 	auto n = ap.GetArgumentValue<int>("-n");
 
 	// total number of steps
-	auto N = ap.GetArgumentValue<int>("-N");
+	size_t N = static_cast<size_t>(ap.GetArgumentValue<int>("-N"));
 
 #pragma endregion
 
@@ -258,7 +258,7 @@ void runner1D(const CommandLineArgumentParser& ap, const bool debug)
 	DEBUG_PRINT_END;
 
 	BoundaryCondition leftBc(leftBoundaryConditionType, leftBoundaryConditionValue);
-	BoundaryCondition rightBc(leftBoundaryConditionType, rightBoundaryConditionValue);
+	BoundaryCondition rightBc(rightBoundaryConditionType, rightBoundaryConditionValue);
 	BoundaryCondition1D bc(leftBc, rightBc);
 
 	DEBUG_PRINT_START(Creating PDE input data ...);
@@ -271,7 +271,6 @@ void runner1D(const CommandLineArgumentParser& ap, const bool debug)
 
 	std::vector<sType> solutionMatrix;
 
-	unsigned nSolutions = 0;
 	DEBUG_PRINT_START(Solving ...);
 
 	forge::Window wnd(1000, 800, "Plotting Demo");
@@ -347,11 +346,11 @@ void runner2D(const CommandLineArgumentParser& ap, const bool debug)
 
 	auto downBoundaryConditionTypeString = ap.GetArgumentValue<std::string>("-dbct", leftBoundaryConditionTypeString);
 	auto downBoundaryConditionType = parseBoundaryConditionType(downBoundaryConditionTypeString);
-	double downBoundaryConditionValue = ap.GetArgumentValue<double>("-dbc", leftBoundaryConditionValue);
+	auto downBoundaryConditionValue = ap.GetArgumentValue<double>("-dbc", leftBoundaryConditionValue);
 
 	auto upBoundaryConditionTypeString = ap.GetArgumentValue<std::string>("-ubct", leftBoundaryConditionTypeString);
 	auto upBoundaryConditionType = parseBoundaryConditionType(upBoundaryConditionTypeString);
-	double upBoundaryConditionValue = ap.GetArgumentValue<double>("-ubc", leftBoundaryConditionValue);
+    auto upBoundaryConditionValue = ap.GetArgumentValue<double>("-ubc", leftBoundaryConditionValue);
 
 #pragma endregion
 
@@ -372,7 +371,7 @@ void runner2D(const CommandLineArgumentParser& ap, const bool debug)
 	auto n = ap.GetArgumentValue<int>("-n");
 
 	// total number of steps
-	auto N = ap.GetArgumentValue<int>("-N");
+	unsigned N = static_cast<unsigned>(ap.GetArgumentValue<int>("-N"));
 
 #pragma endregion
 
@@ -443,7 +442,7 @@ void runner2D(const CommandLineArgumentParser& ap, const bool debug)
 	DEBUG_PRINT_END;
 
 	BoundaryCondition leftBc(leftBoundaryConditionType, leftBoundaryConditionValue);
-	BoundaryCondition rightBc(leftBoundaryConditionType, rightBoundaryConditionValue);
+	BoundaryCondition rightBc(rightBoundaryConditionType, rightBoundaryConditionValue);
 	BoundaryCondition downBc(downBoundaryConditionType, downBoundaryConditionValue);
 	BoundaryCondition upBc(upBoundaryConditionType, upBoundaryConditionValue);
 	BoundaryCondition2D bc(leftBc, rightBc, downBc, upBc);

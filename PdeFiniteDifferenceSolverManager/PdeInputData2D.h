@@ -41,7 +41,7 @@ namespace pde
 					   const SolverType solverType,
 					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition2D boundaryConditions = BoundaryCondition2D())
-			: PdeInputData(initialCondition,
+			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
 						   dt,
 						   solverType,
 						   spaceDiscretizerType),
@@ -62,7 +62,7 @@ namespace pde
 					   const SolverType solverType,
 					   const SpaceDiscretizerType spaceDiscretizerType,
 					   const BoundaryCondition2D boundaryConditions = BoundaryCondition2D())
-			: PdeInputData(initialCondition,
+			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
 						   dt,
 						   solverType,
 						   spaceDiscretizerType),

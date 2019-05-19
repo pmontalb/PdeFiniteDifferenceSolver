@@ -20,7 +20,7 @@ namespace pde
 		// befriend the mother CRTP class
 		friend class FiniteDifferenceSolver1D<WaveEquationSolver1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 
-		using FiniteDifferenceSolver1D::FiniteDifferenceSolver1D;
+		using FiniteDifferenceSolver1D<WaveEquationSolver1D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver1D;
 
 		MAKE_DEFAULT_CONSTRUCTORS(WaveEquationSolver1D);
 
