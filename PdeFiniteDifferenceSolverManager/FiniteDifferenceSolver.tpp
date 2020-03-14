@@ -5,8 +5,8 @@
 namespace pde
 {
 	template<class pdeImpl, class pdeInputType, MemorySpace ms, MathDomain md>
-	FiniteDifferenceSolver<pdeImpl, pdeInputType, ms, md>::FiniteDifferenceSolver(const pdeInputType& inputData_)
-		: inputData(inputData_)
+	FiniteDifferenceSolver<pdeImpl, pdeInputType, ms, md>::FiniteDifferenceSolver(pdeInputType&& inputData_)
+		: inputData(std::move(inputData_))
 	{
 	}
 

@@ -26,7 +26,7 @@ namespace pde
 	class FiniteDifferenceSolver
 	{
 	public:
-		FiniteDifferenceSolver(const pdeInputType& inputData);
+		FiniteDifferenceSolver(pdeInputType&& inputData);
 
 		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver)
 
@@ -34,7 +34,7 @@ namespace pde
 		void Advance(const unsigned nSteps = 1);
 
 		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solution = nullptr;
-		const pdeInputType& inputData;
+		pdeInputType inputData;
 	protected:
 		std::unique_ptr<cl::Tensor<memorySpace, mathDomain>> timeDiscretizers = nullptr;
 		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> spaceDiscretizer = nullptr;

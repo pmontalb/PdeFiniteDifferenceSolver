@@ -43,6 +43,8 @@ create_executable(
         PdeFiniteDifferenceSolver/main.cpp
     DEPENDENCIES
         PdeFiniteDifferenceSolverManager
+	PUBLIC_INCLUDE_DIRECTORIES
+		.
 )
 
 create_cuda_executable(
@@ -53,9 +55,9 @@ create_cuda_executable(
     DEPENDENCIES
         PdeFiniteDifferenceSolverManager
 	PUBLIC_INCLUDE_DIRECTORIES
-		../forge ../forge/include
-    DEPENDENCIES
-        forge
+		../forge ../forge/include .
+    SYSTEM_DEPENDENCIES
+        forge -lGL
 )
 
 find_package(GTest REQUIRED)

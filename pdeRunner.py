@@ -364,6 +364,7 @@ def run_wave_2D(solver_type="ImplicitEuler", output_file="wave2d.cl",
 
     return x_grid, y_grid, solution
 
+
 if __name__ == "__main__":
 
     #run_transport_1D()

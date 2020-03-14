@@ -67,6 +67,8 @@ namespace pde
 			boundaryConditions(boundaryConditions_)
 		{
 		}
+
+		PdeInputData1D(PdeInputData1D&& rhs) = default;
 	};
 
 #pragma region Type aliases
