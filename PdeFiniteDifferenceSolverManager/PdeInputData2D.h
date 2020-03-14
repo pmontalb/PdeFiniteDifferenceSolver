@@ -31,47 +31,49 @@ namespace pde
 
 		const BoundaryCondition2D boundaryConditions = BoundaryCondition2D();
 
-		PdeInputData2D(const cl::ColumnWiseMatrix<memorySpace, mathDomain>& initialCondition,
-					   const cl::Vector<memorySpace, mathDomain>& xSpaceGrid,
-					   const cl::Vector<memorySpace, mathDomain>& ySpaceGrid,
-					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& xVelocity,
-					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& yVelocity,
-					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& diffusion,
-					   const double dt,
-					   const SolverType solverType,
-					   const SpaceDiscretizerType spaceDiscretizerType,
-					   const BoundaryCondition2D boundaryConditions = BoundaryCondition2D())
-			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
-						   dt,
-						   solverType,
-						   spaceDiscretizerType),
-			xSpaceGrid(xSpaceGrid),
-			ySpaceGrid(ySpaceGrid),
-			diffusion(diffusion.Flatten()),
-			boundaryConditions(boundaryConditions)
+		PdeInputData2D(const cl::ColumnWiseMatrix<memorySpace, mathDomain>& initialCondition_,
+					   const cl::Vector<memorySpace, mathDomain>& xSpaceGrid_,
+					   const cl::Vector<memorySpace, mathDomain>& ySpaceGrid_,
+					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& xVelocity_,
+					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& yVelocity_,
+					   const cl::ColumnWiseMatrix<memorySpace, mathDomain>& diffusion_,
+					   const typename cl::ColumnWiseMatrix<memorySpace, mathDomain>::stdType dt_,
+					   const SolverType solverType_,
+					   const SpaceDiscretizerType spaceDiscretizerType_,
+					   const BoundaryCondition2D& boundaryConditions_ = BoundaryCondition2D())
+			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition_),
+						   dt_,
+						   solverType_,
+						   spaceDiscretizerType_),
+			xSpaceGrid(xSpaceGrid_),
+			ySpaceGrid(ySpaceGrid_),
+			xVelocity(xVelocity_),
+			yVelocity(yVelocity_),
+			diffusion(diffusion_.Flatten()),
+			boundaryConditions(boundaryConditions_)
 		{
 		}
 
-		PdeInputData2D(const cl::ColumnWiseMatrix<memorySpace, mathDomain>& initialCondition,
-					   const cl::Vector<memorySpace, mathDomain>& xSpaceGrid,
-					   const cl::Vector<memorySpace, mathDomain>& ySpaceGrid,
-					   const typename cl::Traits<mathDomain>::stdType xVelocity,
-					   const typename cl::Traits<mathDomain>::stdType yVelocity,
-					   const typename cl::Traits<mathDomain>::stdType diffusion,
-					   const double dt,
-					   const SolverType solverType,
-					   const SpaceDiscretizerType spaceDiscretizerType,
-					   const BoundaryCondition2D boundaryConditions = BoundaryCondition2D())
-			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
-						   dt,
-						   solverType,
-						   spaceDiscretizerType),
-			xSpaceGrid(xSpaceGrid),
-			ySpaceGrid(ySpaceGrid),
-			xVelocity(cl::Vector<memorySpace, mathDomain>(initialCondition.nRows(), xVelocity)),
-			yVelocity(cl::Vector<memorySpace, mathDomain>(initialCondition.nCols(), yVelocity)),
-			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), diffusion)),
-			boundaryConditions(boundaryConditions)
+		PdeInputData2D(const cl::ColumnWiseMatrix<memorySpace, mathDomain>& initialCondition_,
+					   const cl::Vector<memorySpace, mathDomain>& xSpaceGrid_,
+					   const cl::Vector<memorySpace, mathDomain>& ySpaceGrid_,
+					   const typename cl::Traits<mathDomain>::stdType xVelocity_,
+					   const typename cl::Traits<mathDomain>::stdType yVelocity_,
+					   const typename cl::Traits<mathDomain>::stdType diffusion_,
+					   const typename cl::ColumnWiseMatrix<memorySpace, mathDomain>::stdType dt_,
+					   const SolverType solverType_,
+					   const SpaceDiscretizerType spaceDiscretizerType_,
+					   const BoundaryCondition2D& boundaryConditions_ = BoundaryCondition2D())
+			: PdeInputData<BoundaryCondition2D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition_),
+						   static_cast<double>(dt_),
+						   solverType_,
+						   spaceDiscretizerType_),
+			xSpaceGrid(xSpaceGrid_),
+			ySpaceGrid(ySpaceGrid_),
+			xVelocity(cl::Vector<memorySpace, mathDomain>(initialCondition_.nRows(), xVelocity_)),
+			yVelocity(cl::Vector<memorySpace, mathDomain>(initialCondition_.nCols(), yVelocity_)),
+			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition_.size(), diffusion_)),
+			boundaryConditions(boundaryConditions_)
 		{
 		}
 	};

@@ -10,9 +10,9 @@
 
 #define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
 	virtual ~CLASS() noexcept = default;\
-	CLASS(const CLASS& rhs) noexcept = default;\
+	CLASS(const CLASS& rhs) noexcept = delete;\
 	CLASS(CLASS&& rhs) noexcept = default;\
-	CLASS& operator=(const CLASS& rhs) noexcept = default;\
+	CLASS& operator=(const CLASS& rhs) noexcept = delete;\
 	CLASS& operator=(CLASS&& rhs) noexcept = default;\
 
 
@@ -28,21 +28,24 @@ namespace pde
 	public:
 		FiniteDifferenceSolver(const pdeInputType& inputData);
 
-		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver);
+		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver)
 
+		void Precompute();
 		void Advance(const unsigned nSteps = 1);
 
-		const cl::Tensor<memorySpace, mathDomain>* GetTimeDiscretizer() const noexcept;
-
-		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solution;
+		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solution = nullptr;
 		const pdeInputType& inputData;
 	protected:
-		std::shared_ptr<cl::Tensor<memorySpace, mathDomain>> timeDiscretizers;
-		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> spaceDiscretizer;
-		std::shared_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solutionDerivative;
+		std::unique_ptr<cl::Tensor<memorySpace, mathDomain>> timeDiscretizers = nullptr;
+		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> spaceDiscretizer = nullptr;
+		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solutionDerivative = nullptr;
+
+	private:
+		bool hasPrecomputed = false;
 	};
 }
 
 #undef MAKE_DEFAULT_CONSTRUCTORS
 
 #include <FiniteDifferenceSolver.tpp>
+

@@ -31,23 +31,23 @@ namespace pde
 		*/
 		const SpaceDiscretizerType spaceDiscretizerType;
 
-		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition,
-					 const double dt,
-					 const SolverType solverType,
-					 const SpaceDiscretizerType spaceDiscretizerType)
-			: initialCondition(initialCondition),
-			dt(dt),
-			solverType(solverType),
-			spaceDiscretizerType(spaceDiscretizerType)
+		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition_,
+					 const double dt_,
+					 const SolverType solverType_,
+					 const SpaceDiscretizerType spaceDiscretizerType_)
+			: initialCondition(initialCondition_),
+			dt(dt_),
+			solverType(solverType_),
+			spaceDiscretizerType(spaceDiscretizerType_)
 		{
 		}
 
-		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition,
-					 const double dt,
-					 const SolverType solverType)
-			: initialCondition(initialCondition),
-			dt(dt),
-			solverType(solverType)
+		PdeInputData(const cl::Tensor<memorySpace, mathDomain>& initialCondition_,
+					 const double dt_,
+					 const SolverType solverType_)
+			: initialCondition(initialCondition_),
+			dt(dt_),
+			solverType(solverType_)
 		{
 		}
 

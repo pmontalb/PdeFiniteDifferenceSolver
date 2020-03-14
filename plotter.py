@@ -17,14 +17,14 @@ def __ax_formatter(ax, grid=False, title="", x_label="", y_label="", show_legend
         ax.legend(loc='best')
 
 
-def surf(z, x, y, title="", x_label="", y_label="", show_legend=False, show=False):
+def surf(z, x, y, title="", x_label="", y_label="", show_legend=False, show=False, rstride=1, cstride=1, cmap=cm.coolwarm):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
     # Create X and Y data
     x_grid, y_grid = np.meshgrid(x, y)
 
-    ax.plot_surface(x_grid, y_grid, z, cmap=cm.coolwarm, rstride=16, cstride=16, antialiased=True)
+    ax.plot_surface(x_grid, y_grid, z, cmap=cmap, rstride=rstride, cstride=cstride, antialiased=True)
 
     __ax_formatter(ax, False, title, x_label, y_label, show_legend)
 

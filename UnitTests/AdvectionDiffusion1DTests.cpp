@@ -17,8 +17,8 @@ namespace pdet
 	TEST_F(AdvectionDiffusion1DTests, ConstantSolutionNoTransportNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
-		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
-		double dt = 1e-4;
+		cl::vec grid = cl::vec::LinSpace(0.0f, 1.0f, initialCondition.size());
+		float dt = 1e-4f;
 		float velocity = 0.0f;
 		float diffusion = 0.0f;
 
@@ -34,7 +34,7 @@ namespace pdet
 				const auto solution = solver.solution->columns[0]->Get();
 
 				for (size_t i = 0; i < solution.size(); ++i)
-					ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 1e-7);
+					EXPECT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 1e-7f) << static_cast<int>(solverType);
 			}
 		}
 	}
@@ -42,8 +42,8 @@ namespace pdet
 	TEST_F(AdvectionDiffusion1DTests, ConstantSolutionNoDiffusion)
 	{
 		cl::vec initialCondition(10, 1.0f);
-		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
-		double dt = 1e-4;
+		cl::vec grid = cl::vec::LinSpace(0.0f, 1.0f, initialCondition.size());
+		float dt = 1e-4f;
 		float velocity = 1.0f;
 		float diffusion = 0.0f;
 
@@ -61,9 +61,9 @@ namespace pdet
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
 					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.8e-6);
+						ASSERT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 2.8e-6f);
 					else
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 3e-5);
+						ASSERT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 3e-5f);
 				}
 			}
 		}
@@ -72,8 +72,8 @@ namespace pdet
 	TEST_F(AdvectionDiffusion1DTests, ConstantSolution)
 	{
 		cl::vec initialCondition(10, 1.0f);
-		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
-		double dt = 1e-4;
+		cl::vec grid = cl::vec::LinSpace(0.0f, 1.0f, initialCondition.size());
+		float dt = 1e-4f;
 		float velocity = 1.0f;
 		float diffusion = 2.0f;
 
@@ -91,9 +91,9 @@ namespace pdet
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
 					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 5.5e-6);
+						EXPECT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 5.5e-6f) << static_cast<int>(solverType) << "|" << std::fabs(solution[i] - _initialCondition[i]);
 					else
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 3e-5);
+						ASSERT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 3e-5f);
 				}
 			}
 		}
@@ -101,9 +101,9 @@ namespace pdet
 
 	TEST_F(AdvectionDiffusion1DTests, LinearSolutionNoTransport)
 	{
-		cl::vec initialCondition = cl::LinSpace(0.0f, 10.0f, 10);
-		cl::vec grid = cl::LinSpace(0.0f, 1.0f, initialCondition.size());
-		double dt = 1e-4;
+		cl::vec initialCondition = cl::vec::LinSpace(0.0f, 10.0f, 10);
+		cl::vec grid = cl::vec::LinSpace(0.0f, 1.0f, initialCondition.size());
+		float dt = 1e-4f;
 		float velocity = 0.0f;
 		float diffusion = 2.0f;
 
@@ -126,9 +126,9 @@ namespace pdet
 				for (size_t i = 0; i < solution.size(); ++i)
 				{
 					if (solverType != SolverType::RichardsonExtrapolation2 && solverType != SolverType::RichardsonExtrapolation3)
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 2.7e-5);
+						ASSERT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 2.7e-5f);
 					else
-						ASSERT_TRUE(fabs(solution[i] - _initialCondition[i]) <= 5e-4);
+						ASSERT_TRUE(std::fabs(solution[i] - _initialCondition[i]) <= 5e-4f);
 				}
 			}
 		}
@@ -136,24 +136,24 @@ namespace pdet
 
 	TEST_F(AdvectionDiffusion1DTests, SineSolutionNoDiffusion)
 	{
-		cl::vec grid = cl::LinSpace(0.0f, 1.0f, 10);
+		cl::vec grid = cl::vec::LinSpace(0.0f, 1.0f, 10);
 		auto _grid = grid.Get();
 
 		std::vector<float> _initialCondition(10);
 		for (unsigned i = 0; i < _initialCondition.size(); ++i)
-			_initialCondition[i] = sin(_grid[i]);
+			_initialCondition[i] = std::sin(_grid[i]);
 
 		cl::vec initialCondition(_initialCondition);
 		
 		unsigned steps = 10;
-		double dt = 1e-4;
-		float velocity = .05f;
-		float diffusion = 0.0f;
+		auto dt = 1e-4f;
+		auto velocity = .05f;
+		auto diffusion = 0.0f;
 
-		float finalTime = steps * dt;
+		auto finalTime = static_cast<float>(steps) * dt;
 		std::vector<float> _exactSolution(10);
 		for (unsigned i = 0; i < _initialCondition.size(); ++i)
-			_exactSolution[i] = sin(_grid[i] - velocity * finalTime);
+			_exactSolution[i] = std::sin(_grid[i] - velocity * finalTime);
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
@@ -164,7 +164,7 @@ namespace pdet
 			const auto solution = solver.solution->columns[0]->Get();
 
 			for (size_t i = 1; i < solution.size() - 1; ++i)  // excluding BC
-				ASSERT_TRUE(fabs(solution[i] - _exactSolution[i]) <= 1.1e-4);
+				ASSERT_TRUE(std::fabs(solution[i] - _exactSolution[i]) <= 1.1e-4f);
 			
 		}
 	}

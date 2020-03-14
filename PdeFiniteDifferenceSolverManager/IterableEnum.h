@@ -11,7 +11,7 @@ namespace enums
 		class Iterator
 		{
 		public:
-			Iterator(const int iter) : iter(iter)
+			explicit Iterator(const int iter) : _iter(iter)
 			{
 			}
 
@@ -22,23 +22,24 @@ namespace enums
 			Iterator& operator=(Iterator&&) noexcept = default;
 
 			// needed for the iteration
-			T operator*(void) const
+			T operator*() const
 			{
-				return (T)iter;
+				return static_cast<T>(_iter);
 			}
 
-			void operator++(void)
+			Iterator& operator++()
 			{
-				++iter;
+				++_iter;
+				return *this;
 			}
 
 			bool operator!=(Iterator rhs)
 			{
-				return iter != rhs.iter;
+				return _iter != rhs._iter;
 			}
 
 		private:
-			int iter;
+			int _iter;
 		};
 	};
 

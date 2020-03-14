@@ -26,15 +26,15 @@ namespace pde
 		friend class FiniteDifferenceSolver<solverImpl, PdeInputData2D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 		using FiniteDifferenceSolver<solverImpl, PdeInputData2D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver;
 
-		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver2D);
+		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver2D)
 
 	protected:
-		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution,
-						 const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers,
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,
+						 const cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_,
 						 const SolverType solverType,
 						 const unsigned nSteps = 1);
 
-		void Setup(const unsigned solverSteps);
+		virtual void Setup(const unsigned solverSteps);
 	};
 }
 

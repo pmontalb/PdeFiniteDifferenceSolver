@@ -29,42 +29,42 @@ namespace pde
 
 		const BoundaryCondition1D boundaryConditions = BoundaryCondition1D();
 
-		PdeInputData1D(const cl::Vector<memorySpace, mathDomain>& initialCondition,
-					   const cl::Vector<memorySpace, mathDomain>& spaceGrid,
-					   const cl::Vector<memorySpace, mathDomain>& velocity,
-					   const cl::Vector<memorySpace, mathDomain>& diffusion,
-					   const double dt,
-					   const SolverType solverType,
-					   const SpaceDiscretizerType spaceDiscretizerType,
-					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
-			: PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
-						   dt,
-						   solverType,
-						   spaceDiscretizerType),
-			velocity(velocity),
-			diffusion(diffusion),
-			spaceGrid(spaceGrid),
-			boundaryConditions(boundaryConditions)
+		PdeInputData1D(const cl::Vector<memorySpace, mathDomain>& initialCondition_,
+					   const cl::Vector<memorySpace, mathDomain>& spaceGrid_,
+					   const cl::Vector<memorySpace, mathDomain>& velocity_,
+					   const cl::Vector<memorySpace, mathDomain>& diffusion_,
+					   const typename cl::Vector<memorySpace, mathDomain>::stdType dt_,
+					   const SolverType solverType_,
+					   const SpaceDiscretizerType spaceDiscretizerType_,
+					   const BoundaryCondition1D& boundaryConditions_ = BoundaryCondition1D())
+			: PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition_),
+						   dt_,
+						   solverType_,
+						   spaceDiscretizerType_),
+			velocity(velocity_),
+			diffusion(diffusion_),
+			spaceGrid(spaceGrid_),
+			boundaryConditions(boundaryConditions_)
 		{
 		}
 
-		PdeInputData1D(const cl::Vector<memorySpace, mathDomain>& initialCondition,
-					   const cl::Vector<memorySpace, mathDomain>& spaceGrid,
-					   const typename cl::Traits<mathDomain>::stdType velocity,
-					   const typename cl::Traits<mathDomain>::stdType diffusion,
-					   const double dt,
-					   const SolverType solverType,
-					   const SpaceDiscretizerType spaceDiscretizerType,
-					   const BoundaryCondition1D boundaryConditions = BoundaryCondition1D())
+		PdeInputData1D(const cl::Vector<memorySpace, mathDomain>& initialCondition_,
+					   const cl::Vector<memorySpace, mathDomain>& spaceGrid_,
+					   const typename cl::Traits<mathDomain>::stdType velocity_,
+					   const typename cl::Traits<mathDomain>::stdType diffusion_,
+					   const typename cl::Vector<memorySpace, mathDomain>::stdType dt_,
+					   const SolverType solverType_,
+					   const SpaceDiscretizerType spaceDiscretizerType_,
+					   const BoundaryCondition1D& boundaryConditions_ = BoundaryCondition1D())
 			:
-                PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition),
-						 dt,
-						 solverType,
-						 spaceDiscretizerType),
-			velocity(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), velocity)),
-			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition.size(), diffusion)),
-                spaceGrid(spaceGrid),
-			boundaryConditions(boundaryConditions)
+                PdeInputData<BoundaryCondition1D, memorySpace, mathDomain>(cl::Tensor<memorySpace, mathDomain>(initialCondition_),
+						 static_cast<double>(dt_),
+						 solverType_,
+						 spaceDiscretizerType_),
+			velocity(cl::Vector<memorySpace, mathDomain>(initialCondition_.size(), velocity_)),
+			diffusion(cl::Vector<memorySpace, mathDomain>(initialCondition_.size(), diffusion_)),
+            spaceGrid(spaceGrid_),
+			boundaryConditions(boundaryConditions_)
 		{
 		}
 	};

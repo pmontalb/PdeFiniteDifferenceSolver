@@ -88,14 +88,14 @@
 
 #pragma endregion
 
-__CREATE_FUNCTION_2_ARG(MakeSpaceDiscretizer1D, MemoryTile, spaceDiscretizer, const FiniteDifferenceInput1D, input);
-__CREATE_FUNCTION_2_ARG(MakeSpaceDiscretizer2D, MemoryTile, spaceDiscretizer, const FiniteDifferenceInput2D, input);
-__CREATE_FUNCTION_2_ARG(SetBoundaryConditions1D, MemoryTile, solution, const FiniteDifferenceInput1D, input);
-__CREATE_FUNCTION_2_ARG(SetBoundaryConditions2D, MemoryTile, solution, const FiniteDifferenceInput2D, input);
-__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerAdvectionDiffusion, MemoryCube, timeDiscretizer, const MemoryTile, spaceDiscretizer, const SolverType, solverType, const double, dt);
-__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerWaveEquation, MemoryCube, timeDiscretizer, const MemoryTile, spaceDiscretizer, const SolverType, solverType, const double, dt);
-__CREATE_FUNCTION_4_ARG(Iterate1D, MemoryTile, solution, const MemoryCube, timeDiscretizer, const FiniteDifferenceInput1D, input, const unsigned, nSteps);
-__CREATE_FUNCTION_4_ARG(Iterate2D, MemoryTile, solution, const MemoryCube, timeDiscretizer, const FiniteDifferenceInput2D, input, const unsigned, nSteps);
+__CREATE_FUNCTION_2_ARG(MakeSpaceDiscretizer1D, MemoryTile&, spaceDiscretizer, const FiniteDifferenceInput1D&, input)
+__CREATE_FUNCTION_2_ARG(MakeSpaceDiscretizer2D, MemoryTile&, spaceDiscretizer, const FiniteDifferenceInput2D&, input)
+__CREATE_FUNCTION_2_ARG(SetBoundaryConditions1D, MemoryTile&, solution, const FiniteDifferenceInput1D&, input)
+__CREATE_FUNCTION_2_ARG(SetBoundaryConditions2D, MemoryTile&, solution, const FiniteDifferenceInput2D&, input)
+__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerAdvectionDiffusion, MemoryCube&, timeDiscretizer, const MemoryTile&, spaceDiscretizer, const SolverType, solverType, const double, dt)
+__CREATE_FUNCTION_4_ARG(MakeTimeDiscretizerWaveEquation, MemoryCube&, timeDiscretizer, const MemoryTile&, spaceDiscretizer, const SolverType, solverType, const double, dt)
+__CREATE_FUNCTION_4_ARG(Iterate1D, MemoryTile&, solution, const MemoryCube&, timeDiscretizer, const FiniteDifferenceInput1D&, input, const unsigned, nSteps)
+__CREATE_FUNCTION_4_ARG(Iterate2D, MemoryTile&, solution, const MemoryCube&, timeDiscretizer, const FiniteDifferenceInput2D&, input, const unsigned, nSteps)
 
 #pragma region Undef macros
 

@@ -3,7 +3,7 @@
 #include <FiniteDifferenceSolver2D.h>
 
 #define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
-	virtual ~CLASS() noexcept = default;\
+	virtual ~CLASS() noexcept override = default;\
 	CLASS(const CLASS& rhs) noexcept = default;\
 	CLASS(CLASS&& rhs) noexcept = default;\
 	CLASS& operator=(const CLASS& rhs) noexcept = default;\
@@ -22,17 +22,17 @@ namespace pde
 
 		using FiniteDifferenceSolver2D<WaveEquationSolver2D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver2D;
 
-		MAKE_DEFAULT_CONSTRUCTORS(WaveEquationSolver2D);
+		MAKE_DEFAULT_CONSTRUCTORS(WaveEquationSolver2D)
 
 	protected:
-		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution,
-						 const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers,
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,
+						 const cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_,
 						 const SolverType solverType,
 						 const unsigned nSteps = 1);
 
-		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType);
+		void MakeTimeDiscretizer(cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_, const SolverType solverType);
 
-		void Setup(const unsigned solverSteps);
+		void Setup(const unsigned solverSteps) override;
 	};
 
 #pragma region Type aliases

@@ -1,78 +1,68 @@
+include_guard()
+
 cmake_minimum_required(VERSION 3.14)
-project(PdeFiniteDifferenceSolver)
+project(CudaLight)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CUDA_STANDARD 14)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_COMPILER /usr/local/cuda-10.1/bin/nvcc CACHE PATH "" FORCE)
-enable_language(CUDA)
-
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIR})
+include(cmake/All.cmake)
+set(LANGUAGES_USE_CUDA ON CACHE BOOL "" FORCE)
 
 # forge
 include_directories(../forge)
 include_directories(../forge/include)
-# https://github.com/arrayfire/arrayfire/wiki/Build-Instructions-for-Linux
+# [git@github.com:arrayfire/forge.git]
+# git clone git@github.com:arrayfire/forge.git
+# sudo apt-get install libboost-all-dev
+# sudo apt-get install libglfw3
+# sudo apt-get install libglfw3-dev
+# sudo apt-get install libfreetype6
+# sudo apt-get install fontconfig
+# sudo apt-get install libglm-dev
 add_subdirectory(../forge ${CMAKE_BINARY_DIR}/forge EXCLUDE_FROM_ALL)
 
 # CudaLight
-include_directories(../CudaLight/CudaLight)
-include_directories(../CudaLightKernels)
-include_directories(../NpyCpp/Npy++)
-include_directories(../NpyCpp/MemoryMapping)
 add_subdirectory(../CudaLight ${CMAKE_BINARY_DIR}/CudaLight EXCLUDE_FROM_ALL)
 
 # PdeFiniteDifferenceKernels
-include_directories(../PdeFiniteDifferenceKernels)
 add_subdirectory(../PdeFiniteDifferenceKernels ${CMAKE_BINARY_DIR}/PdeFiniteDifferenceKernels EXCLUDE_FROM_ALL)
 
-include_directories(PdeFiniteDifferenceSolver)
-include_directories(PdeFiniteDifferenceSolverGpuPlot)
-include_directories(PdeFiniteDifferenceSolverManager)
-include_directories(UnitTests)
-
-# set warnings
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(WARNINGS -Weverything -Werror
-            -Wno-c++98-compat -Wno-c++98-compat-pedantic
-            -Wno-reserved-id-macro -Wno-switch-enum -Wno-unknown-pragmas -Wno-disabled-macro-expansion
-            -Wno-unneeded-internal-declaration -Wno-weak-vtables -Wno-unused-function -Wno-padded -Wno-unused-macros)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(WARNINGS -Wall -Wextra -Werror -Wno-unknown-pragmas -Wno-unused-function)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
-    set(WARNINGS -Wall -Wextra -Werror -Wno-unknown-pragmas -Wfatal-errors -fstrict-aliasing -pedantic -pedantic-errors)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    message(FATAL "MSVC not supported")
-endif()
-
-add_library(
+create_library(
+    NAME
         PdeFiniteDifferenceSolverManager
+    SOURCES
         PdeFiniteDifferenceSolverManager/FiniteDifferenceManager.cpp
+    DEPENDENCIES
+        CudaLight PdeFiniteDifferenceKernels
+    PUBLIC_INCLUDE_DIRECTORIES
+        PdeFiniteDifferenceSolverManager
 )
-target_compile_options(PdeFiniteDifferenceSolverManager PRIVATE ${WARNINGS})
-target_link_libraries(PdeFiniteDifferenceSolverManager CudaLight PdeFiniteDifferenceKernels)
 
-add_executable(
+create_executable(
+    NAME
         PdeFiniteDifferenceSolver
-
+    SOURCES
         PdeFiniteDifferenceSolver/main.cpp
-        PdeFiniteDifferenceSolver/stdafx.cpp
+    DEPENDENCIES
+        PdeFiniteDifferenceSolverManager
 )
-target_link_libraries(PdeFiniteDifferenceSolver PdeFiniteDifferenceSolverManager)
 
-add_executable(
+create_cuda_executable(
+    NAME
         PdeFiniteDifferenceSolverGpuPlot
-
+    SOURCES
         PdeFiniteDifferenceSolverGpuPlot/main.cu
+    DEPENDENCIES
+        PdeFiniteDifferenceSolverManager
+	PUBLIC_INCLUDE_DIRECTORIES
+		../forge ../forge/include
+    DEPENDENCIES
+        forge
 )
-target_compile_options(PdeFiniteDifferenceSolverGpuPlot PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: -gencode arch=compute_61,code=sm_61 -m64 -restrict --compiler-options -Wall>)
-target_compile_options(PdeFiniteDifferenceSolverGpuPlot PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: -Xcompiler -Wno-unknown-pragmas>)
-target_link_libraries(PdeFiniteDifferenceSolverGpuPlot PdeFiniteDifferenceSolverManager forge -lcudart -lcublas -lcusolver -lcusparse)
 
-add_executable(
+find_package(GTest REQUIRED)
+create_test(
+    NAME
         PdeUnitTests
-
+    SOURCES
         UnitTests/main.cpp
         UnitTests/stdafx.cpp
 
@@ -81,8 +71,10 @@ add_executable(
 
         UnitTests/WaveEquation1DTests.cpp
         UnitTests/WaveEquation2DTests.cpp
+    PUBLIC_INCLUDE_DIRECTORIES
+        ${GTEST_INCLUDE_DIR}
+    DEPENDENCIES
+        PdeFiniteDifferenceSolverManager
+    SYSTEM_DEPENDENCIES
+        gtest pthread
 )
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    target_compile_options(PdeUnitTests PRIVATE -Wno-absolute-value)
-endif()
-target_link_libraries(PdeUnitTests PdeFiniteDifferenceSolverManager gtest pthread)

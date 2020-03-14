@@ -22,10 +22,10 @@ namespace pde
 		
 		using FiniteDifferenceSolver1D<AdvectionDiffusionSolver1D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver1D;
 
-		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver1D);
+		MAKE_DEFAULT_CONSTRUCTORS(AdvectionDiffusionSolver1D)
 
 	protected:
-		void MakeTimeDiscretizer(const std::shared_ptr<cl::Tensor<memorySpace, mathDomain>>& timeDiscretizers, const SolverType solverType);
+		void MakeTimeDiscretizer(cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_, const SolverType solverType);
 	};
 
 #pragma region Type aliases
