@@ -25,7 +25,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::ad1D solver(data);
+			pde::ad1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -50,7 +50,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::ad1D solver(data);
+			pde::ad1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 0; n < 10; ++n)
@@ -80,7 +80,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::ad1D solver(data);
+			pde::ad1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -115,7 +115,7 @@ namespace pdet
 			BoundaryCondition1D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition);
 
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
-			pde::ad1D solver(data);
+			pde::ad1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -158,7 +158,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::ad1D solver(data);
+			pde::ad1D solver(std::move(data));
 
 			solver.Advance(steps);
 			const auto solution = solver.solution->columns[0]->Get();

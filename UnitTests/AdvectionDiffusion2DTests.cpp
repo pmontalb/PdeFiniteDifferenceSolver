@@ -27,7 +27,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, velocity, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::dad2D solver(data);
+			pde::dad2D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -55,7 +55,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, yVelocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::dad2D solver(data);
+			pde::dad2D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -83,7 +83,7 @@ namespace pdet
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, yVelocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::dad2D solver(data);
+			pde::dad2D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -132,7 +132,7 @@ namespace pdet
 												   downBoundaryCondition, upBoundaryCondition);
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, yVelocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
-			pde::dad2D solver(data);
+			pde::dad2D solver(std::move(data));
 
 			const auto _ic = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)

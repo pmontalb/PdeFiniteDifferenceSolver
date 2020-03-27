@@ -29,7 +29,7 @@ namespace pdet
 				continue;
 
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::wave1D solver(data);
+			pde::wave1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -57,7 +57,7 @@ namespace pdet
 				continue;
 
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::wave1D solver(data);
+			pde::wave1D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -107,7 +107,7 @@ namespace pdet
 				continue;
 
 			pde::GpuDoublePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
-			pde::dwave1D solver(data);
+			pde::dwave1D solver(std::move(data));
 
 			solver.Advance(steps);
 			const auto solution = solver.solution->columns[0]->Get();

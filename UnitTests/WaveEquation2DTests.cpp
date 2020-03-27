@@ -30,7 +30,7 @@ namespace pdet
 				continue;
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, velocity, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::dwave2D solver(data);
+			pde::dwave2D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -60,7 +60,7 @@ namespace pdet
 				continue;
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, 0.0, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
-			pde::dwave2D solver(data);
+			pde::dwave2D solver(std::move(data));
 
 			const auto _initialCondition = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
@@ -105,7 +105,7 @@ namespace pdet
 												   downBoundaryCondition, upBoundaryCondition);
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, 0.0, 0.0, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
-			pde::dwave2D solver(data);
+			pde::dwave2D solver(std::move(data));
 
 			const auto _ic = solver.inputData.initialCondition.Get();
 			for (unsigned n = 1; n < 10; ++n)
