@@ -32,7 +32,6 @@ void run(solverType& solver, const clp::CommandLineArgumentParser& ap, bool debu
 	DEBUG_PRINT_END
 
 	DEBUG_PRINT_START(Saving to file ...)
-	std::ofstream outputFile(outputFileString);
 	cl::MatrixToBinaryFile<sType>(solutionMatrix, nSolutions, solver.solution->columns[0]->size(), outputFileString, false);
 	DEBUG_PRINT_END
 }

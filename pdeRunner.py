@@ -25,6 +25,28 @@ else:
 
 chosenBin = debugBin
 
+def read_solution_2D(file_name, N, N_x, N_y):
+    _tensor = np.load(file_name).flatten()
+    tensor = []
+    for n in range(N):
+        m = np.zeros((N_x, N_y))
+        for i in range(N_x):
+            for j in range(N_y):
+                m[j, i] = _tensor[i + j * N_x + n * N_x * N_y]
+        tensor.append(m)
+    return np.array(tensor)
+
+
+def read_solution_1D(file_name, N, N_x):
+    _tensor = np.load(file_name).flatten()
+    tensor = []
+    for n in range(N):
+        m = np.zeros(N_x)
+        for i in range(N_x):
+            m[i] = _tensor[i + n * N_x]
+        tensor.append(m)
+    return np.array(tensor).transpose()
+
 
 def run_transport_1D(space_discretizer="Upwind",
                      solver_type='ExplicitEuler',
@@ -41,6 +63,7 @@ def run_transport_1D(space_discretizer="Upwind",
 
     grid = np.linspace(-np.pi, np.pi, 128)
     ic = np.sin(grid)
+    N = 500
     if run:
         np.save(GRID_FILE, grid)
         np.save(INITIAL_CONDITION_FILE, ic)
@@ -60,10 +83,10 @@ def run_transport_1D(space_discretizer="Upwind",
                   ["-v", ".05"] +
                   ["-dt", "0.1"] +
                   ["-n", "50"] +
-                  ["-N", "500"])
+                  ["-N", str(N)])
         p.communicate()
 
-    solution = np.load(output_file).transpose()
+    solution = read_solution_1D(output_file, N, len(grid))
     if run_animation:
         animate(solution, grid, show=show, save=save, grid=show_grid, name=name)
 
@@ -82,6 +105,7 @@ def run_diffusion_1D(solver_type="CrankNicolson", output_file="diffusion.cl", na
 
     grid = np.linspace(-np.pi, np.pi, 128)
     ic = np.exp(-.5 * grid * grid)
+    N = 500
     if run:
         np.save(GRID_FILE, grid)
         np.save(INITIAL_CONDITION_FILE, ic)
@@ -99,10 +123,10 @@ def run_diffusion_1D(solver_type="CrankNicolson", output_file="diffusion.cl", na
                   ["-v", "0"] +
                   ["-dt", "0.00246"] +
                   ["-n", "50"] +
-                  ["-N", "500"])
+                  ["-N", str(N)])
         p.communicate()
 
-    solution = np.load(output_file).transpose()
+    solution = read_solution_1D(output_file, N, len(grid))
     if run_animation:
         animate(solution, grid, show=show, save=save, grid=show_grid, name=name)
 
@@ -121,6 +145,7 @@ def run_wave_1D(solver_type="ExplicitEuler",
 
     grid = np.linspace(-np.pi, np.pi, 128)
     ic = np.exp(-grid * grid)
+    N = 500
     if run:
         np.save(GRID_FILE, grid)
         np.save(INITIAL_CONDITION_FILE, ic)
@@ -139,11 +164,11 @@ def run_wave_1D(solver_type="ExplicitEuler",
                   ["-v", ".05"] +
                   ["-dt", "0.035"] +
                   ["-n", "100"] +
-                  ["-N", "50"] +
+                  ["-N", str(N)] +
                   ["-dbg"])
         p.communicate()
 
-    solution = np.load(output_file).transpose()
+    solution = read_solution_1D(output_file, N, len(grid))
 
     if run_animation:
         animate(solution, grid, show=show, grid=show_grid, save=save, name=name)
@@ -231,17 +256,7 @@ def run_transport_2D(space_discretizer="Upwind",
                   ["-N", str(N)])
         p.communicate()
 
-    _solution = np.load(output_file).flatten()
-    solution = []
-    for n in range(N):
-        m = np.zeros((len(x_grid), len(y_grid)))
-        for i in range(len(x_grid)):
-            for j in range(len(y_grid)):
-                m[i, j] = _solution[i + j * len(x_grid) + n * len(x_grid) * len(y_grid)]
-        solution.append(m)
-    solution = np.array(solution)
-    np.savetxt("a1.txt", solution[0])
-    np.savetxt("a2.txt", solution[1])
+    solution = read_solution_2D(output_file, N, len(x_grid), len(y_grid))
     if run_animation:
         animate_3D(solution, x_grid, y_grid, show=show, save=save, name=name, rstride=4, cstride=4)
 
@@ -367,7 +382,7 @@ def run_wave_2D(solver_type="ImplicitEuler", output_file="wave2d.cl",
 
 if __name__ == "__main__":
 
-    #run_transport_1D()
+    # run_transport_1D()
     # compare_solvers_transport_1D(["LaxWendroff", "Upwind"], run=True, show=True, show_grid=True,
     #                              save=False, name="numericalDiffusion.gif")
 

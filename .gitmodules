@@ -1,3 +1,12 @@
 [submodule "cmake"]
 	path = cmake
 	url = git@github.com:pmontalb/CmakeUtilities.git
+[submodule "forge"]
+	path = forge
+	url = git@github.com:arrayfire/forge.git
+[submodule "CudaLight"]
+	path = CudaLight
+	url = git@github.com:pmontalb/CudaLight.git
+[submodule "PdeFiniteDifferenceKernels"]
+	path = PdeFiniteDifferenceKernels
+	url = git@github.com:pmontalb/PdeFiniteDifferenceKernels.git
