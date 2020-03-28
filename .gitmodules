@@ -10,3 +10,6 @@
 [submodule "PdeFiniteDifferenceKernels"]
 	path = PdeFiniteDifferenceKernels
 	url = git@github.com:pmontalb/PdeFiniteDifferenceKernels.git
+[submodule "gtest"]
+	path = gtest
+	url = git@github.com:google/googletest.git
