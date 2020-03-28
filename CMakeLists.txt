@@ -43,8 +43,8 @@ create_executable(
         PdeFiniteDifferenceSolver/main.cpp
     DEPENDENCIES
         PdeFiniteDifferenceSolverManager
-	PUBLIC_INCLUDE_DIRECTORIES
-		.
+    PUBLIC_INCLUDE_DIRECTORIES
+	.
 )
 
 create_cuda_executable(
@@ -54,11 +54,12 @@ create_cuda_executable(
         PdeFiniteDifferenceSolverGpuPlot/main.cu
     DEPENDENCIES
         PdeFiniteDifferenceSolverManager
+    PUBLIC_INCLUDE_DIRECTORIES
+	.
     SYSTEM_DEPENDENCIES
         forge
 )
 
-find_package(GTest REQUIRED)
 create_test(
     NAME
         PdeUnitTests
