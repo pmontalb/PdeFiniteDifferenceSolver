@@ -21,6 +21,25 @@ namespace pde
 	}
 
 	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver1D<solverImpl, ms, md>::AdvanceImpl(cl::ColumnWiseMatrix<ms, md>& solution_,
+	                                                               cl::CompressedSparseRowMatrix<ms, md>& timeDiscretizer_,
+	                                                               const SolverType solverType,
+	                                                               const unsigned nSteps)
+	{
+		assert(solution_.nCols() == 1);
+		assert(solverType == SolverType::ExplicitEuler);
+
+		FiniteDifferenceInput1D _input(this->inputData.dt,
+		                               this->inputData.spaceGrid.GetBuffer(),
+		                               this->inputData.velocity.GetBuffer(),
+		                               this->inputData.diffusion.GetBuffer(),
+		                               solverType,
+		                               this->inputData.spaceDiscretizerType,
+		                               this->inputData.boundaryConditions);
+		pde::detail::SparseIterate1D(solution_.GetTile(), timeDiscretizer_.GetCsrBuffer(), _input, nSteps);
+	}
+
+	template<class solverImpl, MemorySpace ms, MathDomain md>
 	void FiniteDifferenceSolver1D<solverImpl, ms, md>::Setup(const unsigned solverSteps)
 	{
         this->solution = std::make_unique<cl::ColumnWiseMatrix<ms, md>>(this->inputData.initialCondition.nRows(), solverSteps);

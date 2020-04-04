@@ -43,7 +43,7 @@ namespace pde
 			// v' = L * u ==> v_{n + 1} = A * (v_n + dt * L * u_n)
 			this->spaceDiscretizer->Multiply(workBuffer, *inSol, MatrixOperation::None, MatrixOperation::None, this->inputData.dt);  // w = L * u_n * dt
 			workBuffer.AddEqualMatrix(*inDer);  // w = v_n + dt * L * u_n
-			this->timeDiscretizers->matrices[0]->Multiply(*outDer, workBuffer);
+			timeDiscretizers_.matrices[0]->Multiply(*outDer, workBuffer);
 			pde::detail::SetBoundaryConditions1D(outDer->GetTile(), _input);
 			// outDer = v_{n + 1} = A * (v_n + dt * L * u_n)
 
@@ -56,6 +56,65 @@ namespace pde
 		{
             solution_.ReadFrom(*inSol);
             this->solutionDerivative->ReadFrom(*inDer);
+		}
+	}
+	template<MemorySpace ms, MathDomain md>
+	void WaveEquationSolver1D<ms, md>::AdvanceImpl(cl::ColumnWiseMatrix<ms, md>& solution_,
+	                                               cl::CompressedSparseRowMatrix<ms, md>& timeDiscretizers_,
+	                                               const SolverType solverType,
+	                                               const unsigned nSteps)
+	{
+		assert(solution_.nCols() == 1);
+		assert(solverType == SolverType::ExplicitEuler);
+
+		FiniteDifferenceInput1D _input(this->inputData.dt,
+		                               this->inputData.spaceGrid.GetBuffer(),
+		                               this->inputData.velocity.GetBuffer(),
+		                               this->inputData.diffusion.GetBuffer(),
+		                               solverType,
+		                               this->inputData.spaceDiscretizerType,
+		                               this->inputData.boundaryConditions);
+
+		cl::Vector<ms, md> solutionBuffer(*solution_.columns[0]), solutionDerivativeBuffer(*this->solutionDerivative->columns[0]);
+		cl::Vector<ms, md> workBuffer(*solution_.columns[0]);
+
+		// for performance reasons, I'm creating two working buffers here, which I will re-use during the main loop
+		cl::Vector<ms, md> *inSol = solution_.columns[0].get(), *outSol = &solutionBuffer;
+		cl::Vector<ms, md> *inDer = this->solutionDerivative->columns[0].get(), *outDer = &solutionDerivativeBuffer;
+		bool needToCopyBack = false;
+
+		// u'' = L * u
+		//		==>
+		// u' = v; v' = L * u
+		for (unsigned n = 0; n < nSteps; ++n)
+		{
+			// u' = v ==> u_{n + 1} = A * (u_n + dt * v_n)
+			workBuffer.ReadFrom(*inSol);  // w = u_n
+			workBuffer.AddEqual(*inDer, this->inputData.dt);  // w = u_n + dt * v_n
+			timeDiscretizers_.Dot(*outSol, workBuffer);
+
+			MemoryTile tmp(outSol->GetBuffer());
+			pde::detail::SetBoundaryConditions1D(tmp, _input);
+			// outSol = u_{n + 1} = A * (u_n + dt * v_n)
+
+			// v' = L * u ==> v_{n + 1} = A * (v_n + dt * L * u_n)
+			this->spaceDiscretizer->Dot(workBuffer, *inSol, MatrixOperation::None, this->inputData.dt);  // w = L * u_n * dt
+			workBuffer.AddEqual(*inDer);  // w = v_n + dt * L * u_n
+			timeDiscretizers_.Dot(*outDer, workBuffer);
+
+			MemoryTile tmp2(outDer->GetBuffer());
+			pde::detail::SetBoundaryConditions1D(tmp2, _input);
+			// outDer = v_{n + 1} = A * (v_n + dt * L * u_n)
+
+			std::swap(inSol, outSol);
+			std::swap(inDer, outDer);
+			needToCopyBack = !needToCopyBack;
+		}
+
+		if (needToCopyBack)
+		{
+			solution_.columns[0]->ReadFrom(*inSol);
+			this->solutionDerivative->columns[0]->ReadFrom(*inDer);
 		}
 	}
 

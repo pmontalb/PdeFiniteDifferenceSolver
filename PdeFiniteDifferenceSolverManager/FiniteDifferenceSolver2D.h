@@ -33,6 +33,10 @@ namespace pde
 						 const cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_,
 						 const SolverType solverType,
 						 const unsigned nSteps = 1);
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,
+		                 cl::CompressedSparseRowMatrix<memorySpace, mathDomain>& timeDiscretizer_,
+		                 const SolverType solverType,
+		                 const unsigned nSteps = 1);
 
 		virtual void Setup(const unsigned solverSteps);
 	};

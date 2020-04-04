@@ -21,6 +21,26 @@ namespace pde
                                        this->inputData.boundaryConditions);
 		pde::detail::Iterate2D(solution_.GetTile(), timeDiscretizers_.GetCube(), _input, nSteps);
 	}
+	template<class solverImpl, MemorySpace ms, MathDomain md>
+	void FiniteDifferenceSolver2D<solverImpl, ms, md>::AdvanceImpl(cl::ColumnWiseMatrix<ms, md>& solution_,
+	                                                               cl::CompressedSparseRowMatrix<ms, md>& timeDiscretizer_,
+	                                                               const SolverType solverType,
+	                                                               const unsigned nSteps)
+	{
+		assert(solution_.nCols() == 1);
+		assert(solverType == SolverType::ExplicitEuler);
+
+		FiniteDifferenceInput2D _input(this->inputData.dt,
+		                               this->inputData.xSpaceGrid.GetBuffer(),
+		                               this->inputData.ySpaceGrid.GetBuffer(),
+		                               this->inputData.xVelocity.GetBuffer(),
+		                               this->inputData.yVelocity.GetBuffer(),
+		                               this->inputData.diffusion.GetBuffer(),
+		                               solverType,
+		                               this->inputData.spaceDiscretizerType,
+		                               this->inputData.boundaryConditions);
+		pde::detail::SparseIterate2D(solution_.GetTile(), timeDiscretizer_.GetCsrBuffer(), _input, nSteps);
+	}
 
 	template<class solverImpl, MemorySpace ms, MathDomain md>
 	void FiniteDifferenceSolver2D<solverImpl, ms, md>::Setup(const unsigned solverSteps)

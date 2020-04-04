@@ -40,6 +40,8 @@ namespace pde
 		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> spaceDiscretizer = nullptr;
 		std::unique_ptr<cl::ColumnWiseMatrix<memorySpace, mathDomain>> solutionDerivative = nullptr;
 
+		std::unique_ptr<cl::CompressedSparseRowMatrix<memorySpace, mathDomain>> sparseExplicitTimeDiscretizer = nullptr; // only 1-step explicit solvers are supported in sparse format
+
 	private:
 		bool hasPrecomputed = false;
 	};
