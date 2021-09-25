@@ -3,7 +3,7 @@
 #include <FiniteDifferenceSolver1D.h>
 
 #define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
-	virtual ~CLASS() noexcept = default;\
+	~CLASS() noexcept override = default;\
 	CLASS(const CLASS& rhs) noexcept = default;\
 	CLASS(CLASS&& rhs) noexcept = default;\
 	CLASS& operator=(const CLASS& rhs) noexcept = default;\

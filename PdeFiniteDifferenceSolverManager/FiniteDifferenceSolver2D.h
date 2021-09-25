@@ -11,11 +11,11 @@
 #include <CudaException.h>
 
 #define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
-	virtual ~CLASS() noexcept = default;\
+	~CLASS() noexcept override = default;\
 	CLASS(const CLASS& rhs) noexcept = default;\
 	CLASS(CLASS&& rhs) noexcept = default;\
 	CLASS& operator=(const CLASS& rhs) noexcept = default;\
-	CLASS& operator=(CLASS&& rhs) noexcept = default;
+	CLASS& operator=(CLASS&& rhs) noexcept = default
 
 namespace pde
 {
@@ -26,7 +26,7 @@ namespace pde
 		friend class FiniteDifferenceSolver<solverImpl, PdeInputData2D<memorySpace, mathDomain>, memorySpace, mathDomain>;
 		using FiniteDifferenceSolver<solverImpl, PdeInputData2D<memorySpace, mathDomain>, memorySpace, mathDomain>::FiniteDifferenceSolver;
 
-		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver2D)
+		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver2D);
 
 	protected:
 		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,

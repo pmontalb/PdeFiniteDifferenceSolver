@@ -21,6 +21,7 @@ namespace pde
 			case SolverType::ExplicitEuler:
 				sparseExplicitTimeDiscretizer = std::make_unique<cl::CompressedSparseRowMatrix<ms, md>>(*this->timeDiscretizers->matrices[0]);
 				timeDiscretizers.reset();
+                                break;
 			default:
 				break;
 		}

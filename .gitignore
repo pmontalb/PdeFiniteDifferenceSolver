@@ -10,3 +10,5 @@ JetBrains.dotMemoryUnit.3.0.20171219.105559
 *.npy
 /PdeFiniteDifferenceSolverGpuPlot/*.pdb
 cmake-build-*
+CMakePresets.json
+IgnoreWarning.h

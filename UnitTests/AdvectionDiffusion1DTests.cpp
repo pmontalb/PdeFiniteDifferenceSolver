@@ -24,6 +24,8 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
+                        if (solverType != SolverType::AdamsBashforth2)
+                          continue;
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(std::move(data));
 

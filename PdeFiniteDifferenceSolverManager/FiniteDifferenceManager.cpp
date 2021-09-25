@@ -151,6 +151,22 @@ __CREATE_FUNCTION_4_ARG(Iterate2D, CudaKernelExceptionFactory, MemoryTile&, solu
 __CREATE_FUNCTION_4_ARG(SparseIterate1D, CudaKernelExceptionFactory, MemoryBuffer&, solution, SparseMemoryTile&, timeDiscretizer, const FiniteDifferenceInput1D&, input, const unsigned, nSteps)
 __CREATE_FUNCTION_4_ARG(SparseIterate2D, CudaKernelExceptionFactory, MemoryBuffer&, solution, SparseMemoryTile&, timeDiscretizer, const FiniteDifferenceInput2D&, input, const unsigned, nSteps)
 
+// Deal with unused macros
+#ifdef __CREATE_FUNCTION_0_ARG
+#endif
+#ifdef __CREATE_FUNCTION_1_ARG
+#endif
+#ifdef __CREATE_FUNCTION_3_ARG
+#endif
+#ifdef __CREATE_FUNCTION_5_ARG
+#endif
+#ifdef __CREATE_FUNCTION_6_ARG
+#endif
+#ifdef __CREATE_FUNCTION_7_ARG
+#endif
+#ifdef __CREATE_FUNCTION_8_ARG
+#endif
+
 #pragma region Undef macros
 
 #undef __CREATE_FUNCTION_0_ARG
