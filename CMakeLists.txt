@@ -15,9 +15,14 @@ set(LANGUAGES_USE_CUDA ON CACHE BOOL "" FORCE)
  	sudo apt-get install fontconfig
 	sudo apt-get install libglm-dev
 #]]
+set(BUILD_SHARED_LIBS_ORIGINAL ${BUILD_SHARED_LIBS})
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
 add_subdirectory(forge ${CMAKE_BINARY_DIR}/forge EXCLUDE_FROM_ALL)
-target_compile_definitions(forge PRIVATE NDEBUG)  # otherwise it doesn't compile due to a missing include
-target_link_libraries(forge PUBLIC -lGL)
+set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_ORIGINAL} CACHE BOOL "" FORCE)
+mark_as_advanced(BUILD_SHARED_LIBS_ORIGINAL)
+
+#target_compile_definitions(forge PRIVATE NDEBUG)  # otherwise it doesn't compile due to a missing include
+#target_link_libraries(forge PUBLIC -lGL)
 
 # CudaLight
 add_subdirectory(CudaLight ${CMAKE_BINARY_DIR}/CudaLight EXCLUDE_FROM_ALL)

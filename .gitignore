@@ -1,14 +1,1 @@
-*.user
-Debug
-v15
-Release
-x86
-JetBrains.dotMemoryUnit.3.0.20171219.105559
-.idea
-*.cl
-*.pyc
-*.npy
-/PdeFiniteDifferenceSolverGpuPlot/*.pdb
-cmake-build-*
-CMakePresets.json
-IgnoreWarning.h
+/home/raiden/programming/PdeFiniteDifferenceSolver/cmake/.gitignore.in
