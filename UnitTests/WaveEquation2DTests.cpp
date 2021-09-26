@@ -1,17 +1,16 @@
 
 #include <gtest/gtest.h>
 
-#include <Vector.h>
 #include <ColumnWiseMatrix.h>
+#include <Vector.h>
 
-#include <WaveEquationSolver2D.h>
 #include <IterableEnum.h>
+#include <WaveEquationSolver2D.h>
 
 namespace pdet
 {
-	class WaveEquation2DTests : public ::testing::Test
+	class WaveEquation2DTests: public ::testing::Test
 	{
-
 	};
 
 	TEST_F(WaveEquation2DTests, ConstantSolutionNoTransport)
@@ -101,8 +100,7 @@ namespace pdet
 			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -3.0);
 			BoundaryCondition downBoundaryCondition(BoundaryConditionType::Neumann, -2.0);
 			BoundaryCondition upBoundaryCondition(BoundaryConditionType::Neumann, 2.0);
-			BoundaryCondition2D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition,
-												   downBoundaryCondition, upBoundaryCondition);
+			BoundaryCondition2D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition, downBoundaryCondition, upBoundaryCondition);
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, 0.0, 0.0, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
 			pde::dwave2D solver(std::move(data));
@@ -125,4 +123,4 @@ namespace pdet
 			}
 		}
 	}
-}
+}	 // namespace pdet

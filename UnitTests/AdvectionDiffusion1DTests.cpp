@@ -1,17 +1,16 @@
 
 #include <gtest/gtest.h>
 
-#include <Vector.h>
 #include <ColumnWiseMatrix.h>
+#include <Vector.h>
 
 #include <AdvectionDiffusionSolver1D.h>
 #include <IterableEnum.h>
 
 namespace pdet
 {
-	class AdvectionDiffusion1DTests : public ::testing::Test
+	class AdvectionDiffusion1DTests: public ::testing::Test
 	{
-
 	};
 
 	TEST_F(AdvectionDiffusion1DTests, ConstantSolutionNoTransportNoDiffusion)
@@ -24,8 +23,8 @@ namespace pdet
 
 		for (const SolverType solverType : enums::IterableEnum<SolverType>())
 		{
-                        if (solverType != SolverType::AdamsBashforth2)
-                          continue;
+			if (solverType != SolverType::AdamsBashforth2)
+				continue;
 			pde::GpuSinglePdeInputData1D data(initialCondition, grid, velocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered);
 			pde::ad1D solver(std::move(data));
 
@@ -146,7 +145,7 @@ namespace pdet
 			_initialCondition[i] = std::sin(_grid[i]);
 
 		cl::vec initialCondition(_initialCondition);
-		
+
 		unsigned steps = 10;
 		auto dt = 1e-4f;
 		auto velocity = .05f;
@@ -165,9 +164,8 @@ namespace pdet
 			solver.Advance(steps);
 			const auto solution = solver.solution->columns[0]->Get();
 
-			for (size_t i = 1; i < solution.size() - 1; ++i)  // excluding BC
+			for (size_t i = 1; i < solution.size() - 1; ++i)	// excluding BC
 				ASSERT_TRUE(std::fabs(solution[i] - _exactSolution[i]) <= 1.1e-4f);
-			
 		}
 	}
-}
+}	 // namespace pdet

@@ -3,7 +3,7 @@
 template<typename solverType, MathDomain md>
 void run(solverType& solver, const clp::CommandLineArgumentParser& ap, bool debug)
 {
-	std::chrono::high_resolution_clock::time_point  start, end;
+	std::chrono::high_resolution_clock::time_point start, end;
 
 	using vType = cl::Vector<MemorySpace::Device, md>;
 	using sType = typename vType::stdType;
@@ -18,7 +18,7 @@ void run(solverType& solver, const clp::CommandLineArgumentParser& ap, bool debu
 	auto outputFileString = ap.GetArgumentValue<std::string>("-of", "sol.cl");
 
 	unsigned nSolutions = 0;
-	DEBUG_PRINT_START(Solving ...)
+	DEBUG_PRINT_START(Solving...)
 
 	for (unsigned m = 0; m < N; ++m)
 	{
@@ -31,7 +31,7 @@ void run(solverType& solver, const clp::CommandLineArgumentParser& ap, bool debu
 
 	DEBUG_PRINT_END
 
-	DEBUG_PRINT_START(Saving to file ...)
+	DEBUG_PRINT_START(Saving to file...)
 	cl::MatrixToBinaryFile<sType>(solutionMatrix, nSolutions, solver.solution->columns[0]->size(), outputFileString, false);
 	DEBUG_PRINT_END
 }

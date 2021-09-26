@@ -1,17 +1,16 @@
 
 #include <gtest/gtest.h>
 
-#include <Vector.h>
 #include <ColumnWiseMatrix.h>
+#include <Vector.h>
 
 #include <AdvectionDiffusionSolver2D.h>
 #include <IterableEnum.h>
 
 namespace pdet
 {
-	class AdvectionDiffusion2DTests : public ::testing::Test
+	class AdvectionDiffusion2DTests: public ::testing::Test
 	{
-
 	};
 
 	TEST_F(AdvectionDiffusion2DTests, ConstantSolutionNoTransportNoDiffusion)
@@ -128,8 +127,7 @@ namespace pdet
 			BoundaryCondition rightBoundaryCondition(BoundaryConditionType::Neumann, -3.0);
 			BoundaryCondition downBoundaryCondition(BoundaryConditionType::Neumann, -2.0);
 			BoundaryCondition upBoundaryCondition(BoundaryConditionType::Neumann, 2.0);
-			BoundaryCondition2D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition,
-												   downBoundaryCondition, upBoundaryCondition);
+			BoundaryCondition2D boundaryConditions(leftBoundaryCondition, rightBoundaryCondition, downBoundaryCondition, upBoundaryCondition);
 
 			pde::GpuDoublePdeInputData2D data(initialCondition, xGrid, yGrid, xVelocity, yVelocity, diffusion, dt, solverType, SpaceDiscretizerType::Centered, boundaryConditions);
 			pde::dad2D solver(std::move(data));
@@ -152,4 +150,4 @@ namespace pdet
 			}
 		}
 	}
-}
+}	 // namespace pdet

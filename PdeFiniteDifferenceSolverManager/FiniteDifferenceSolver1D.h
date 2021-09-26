@@ -1,29 +1,29 @@
 #pragma once
 
-#include <memory>
-#include <Vector.h>
 #include <IBuffer.h>
 #include <Types.h>
+#include <Vector.h>
+#include <memory>
 
-#include <PdeInputData1D.h>
+#include <CudaException.h>
 #include <FiniteDifferenceManager.h>
 #include <FiniteDifferenceSolver.h>
-#include <CudaException.h>
+#include <PdeInputData1D.h>
 
-#define MAKE_DEFAULT_CONSTRUCTORS(CLASS)\
-	~CLASS() noexcept override = default;\
-	CLASS(const CLASS& rhs) noexcept = default;\
-	CLASS(CLASS&& rhs) noexcept = default;\
-	CLASS& operator=(const CLASS& rhs) noexcept = default;\
+#define MAKE_DEFAULT_CONSTRUCTORS(CLASS)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \
+	~CLASS() noexcept override = default;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      \
+	CLASS(const CLASS& rhs) noexcept = default;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \
+	CLASS(CLASS&& rhs) noexcept = default;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
+	CLASS& operator=(const CLASS& rhs) noexcept = default;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     \
 	CLASS& operator=(CLASS&& rhs) noexcept = default
 
 namespace pde
 {
 	/**
-	* CRTP implementation
-	*/
+	 * CRTP implementation
+	 */
 	template<class solverImpl, MemorySpace memorySpace = MemorySpace::Device, MathDomain mathDomain = MathDomain::Float>
-	class FiniteDifferenceSolver1D : public FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
+	class FiniteDifferenceSolver1D: public FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>
 	{
 	public:
 		friend class FiniteDifferenceSolver<solverImpl, PdeInputData1D<memorySpace, mathDomain>, memorySpace, mathDomain>;
@@ -32,18 +32,12 @@ namespace pde
 		MAKE_DEFAULT_CONSTRUCTORS(FiniteDifferenceSolver1D);
 
 	protected:
-		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,
-						 const cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_,
-						 const SolverType solverType,
-						 const unsigned nSteps = 1);
-		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_,
-		                 cl::CompressedSparseRowMatrix<memorySpace, mathDomain>& timeDiscretizer_,
-		                 const SolverType solverType,
-		                 const unsigned nSteps = 1);
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_, const cl::Tensor<memorySpace, mathDomain>& timeDiscretizers_, const SolverType solverType, const unsigned nSteps = 1);
+		void AdvanceImpl(cl::ColumnWiseMatrix<memorySpace, mathDomain>& solution_, cl::CompressedSparseRowMatrix<memorySpace, mathDomain>& timeDiscretizer_, const SolverType solverType, const unsigned nSteps = 1);
 
 		virtual void Setup(const unsigned solverSteps);
 	};
-}
+}	 // namespace pde
 
 #undef MAKE_DEFAULT_CONSTRUCTORS
 

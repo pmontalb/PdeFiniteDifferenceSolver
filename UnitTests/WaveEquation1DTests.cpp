@@ -1,18 +1,17 @@
 
-#include <gtest/gtest.h>
 #include <cmath>
+#include <gtest/gtest.h>
 
-#include <Vector.h>
 #include <ColumnWiseMatrix.h>
+#include <Vector.h>
 
-#include <WaveEquationSolver1D.h>
 #include <IterableEnum.h>
+#include <WaveEquationSolver1D.h>
 
 namespace pdet
 {
-	class WaveEquation1DTests : public ::testing::Test
+	class WaveEquation1DTests: public ::testing::Test
 	{
-
 	};
 
 	TEST_F(WaveEquation1DTests, ConstantSolutionNoTransport)
@@ -76,10 +75,7 @@ namespace pdet
 		cl::dvec grid = cl::dvec::LinSpace(0.0, 1.0, 10);
 		auto _grid = grid.Get();
 
-		const auto f = [](const double x)
-		{
-			return 2.0 * x + 1;
-		};
+		const auto f = [](const double x) { return 2.0 * x + 1; };
 
 		std::vector<double> _initialCondition(10);
 		for (unsigned i = 0; i < _initialCondition.size(); ++i)
@@ -116,4 +112,4 @@ namespace pdet
 				ASSERT_TRUE(fabs(solution[i] - _exactSolution[i]) <= 5e-6) << "err=" << fabs(solution[i] - _exactSolution[i]);
 		}
 	}
-}
+}	 // namespace pdet
