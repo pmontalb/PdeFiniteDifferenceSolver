@@ -3,6 +3,7 @@
 #include <IBuffer.h>
 #include <Types.h>
 #include <Vector.h>
+#include <Tensor.h>
 #include <memory>
 
 #include <CudaException.h>
